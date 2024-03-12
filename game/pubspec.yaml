@@ -11,3 +11,9 @@ dependencies:
   flutter: 
     sdk: flutter
   flame: ^1.16.0
+  yaml: ^3.1.2
+
+flutter: 
+  assets:
+    - assets/images/
+    - assets/config.yaml

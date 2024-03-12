@@ -1,0 +1,4 @@
+player:
+  speed: 200.0
+  turningSpeed: 5.0
+  deceleration: 0.1
