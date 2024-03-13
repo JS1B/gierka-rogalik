@@ -1,20 +1,8 @@
-gierka-rogalik
+gierka-rogalik 
 ==============
 
 How to run
 ----------
 
-```bash
-git clone
-cd gierka-rogalik
-flutter pub get
-
-# For any browser
-flutter run -d web-server --web-port 8080
-
-# For Chrome - better debug tools
-flutter run -d chrome
-
-# For running locally
-flutter run
-```
+TODO
+You can run either the game or the server individually [game](game/README.md) and [server](server/README.md). Scripts will be provided to run both at the same time.
