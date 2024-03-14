@@ -7,12 +7,7 @@ class Bullet extends PositionComponent {
   double lifetime = 10; // Maximum lifetime of the bullet
   double ?radius = 5; // Bullet radius
   double angle = 0; // Bullet angle
-  @override
-  void onMount() {
-    // TODO: implement onMount
-    super.onMount();
-    print(position);
-  }
+
   @override
   void render(Canvas canvas) {
     super.render(canvas);
@@ -23,9 +18,7 @@ class Bullet extends PositionComponent {
   void update(double dt) {
     super.update(dt);
     position += Vector2(velocity! * dt * math.cos(angle), velocity! * dt * math.sin(angle));
-    //print(position);
-    print(angle);
-    // Check if the bullet has exceeded its maximum range
+  
     if (velocity != null) {
       lifetime -= velocity! * dt;
     }
