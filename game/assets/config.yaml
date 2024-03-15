@@ -1,4 +1,56 @@
+# Initial new player stats
 player:
-  speed: 200.0
-  turningSpeed: 5.0
-  deceleration: 0.1
+  sprite: player-sprite.png
+
+  stats:
+    maxSpeed: 200.0
+    turningSpeed: 5.0
+    deceleration: 0.1
+
+    health: 100.0
+    maxHealth: 100.0
+    regenRate: 10.0
+
+    armor: 0.0
+    armorPenetration: 0.0
+
+    attackRange: 100.0
+    attackPower: 10.0
+    attackSpeed: 1.0
+
+    critChance: 0.0
+    critMultiplier: 2.0
+
+# Generic enemy stats
+enemy:
+  sprite: enemy-sprite.png
+  stats:
+    maxSpeed: 100.0
+    turningSpeed: 5.0
+    deceleration: 0.0
+
+    health: 100.0
+    maxHealth: 100.0
+    regenRate: 0.0
+
+    armor: 0.0
+    armorPenetration: 0.0
+
+    attackRange: 100.0
+    attackPower: 10.0
+    attackSpeed: 1.0
+
+    critChance: 0.0
+    critMultiplier: 2.0
+
+# Zombie enemy stats
+zombie:
+  sprite: zombie-sprite.png
+
+  stats:
+    maxSpeed: 50.0
+
+    maxHealth: 200.0
+    regenRate: 40.0
+
+    attackPower: 20.0

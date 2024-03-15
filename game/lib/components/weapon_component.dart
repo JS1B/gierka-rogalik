@@ -1,31 +1,29 @@
 import 'package:flame/components.dart';
 import 'package:game/rogalik_game.dart';
-import 'player_component.dart'; // Import the PlayerComponent file
-import 'bullet_component.dart'; // Import the BulletComponent file
+import 'package:game/components/players/player_component.dart';
+import 'package:game/components/bullet_component.dart';
 import 'dart:math' as math;
 
 class Weapon extends SpriteComponent with HasGameRef<RogalikGame> {
-  Player? player; 
-  double distanceFromPlayer = 5; 
-  List<Bullet> bullets = [];
-  double lastBulletTime = 0; 
+  PlayerComponent? playerComponent;
+  double distanceFromPlayer = 5;
+  List<BulletComponent> bullets = [];
+  double lastBulletTime = 0;
   double currentTime = 0;
-  double? weaponDirection; 
+  double? weaponDirection;
+
+  Weapon(this.playerComponent);
 
   void shoot() {
-      if (weaponDirection != null ) {
-        final bullet = Bullet();
-        bullet.position = position.clone(); 
-        bullet.velocity = 1000;
-        bullet.lifetime = 1000;
-        bullet.angle = weaponDirection!; 
-        bullets.add(bullet);
-        gameRef.add(bullet);
-        print("Shooting" );
-        print(player!.position);
-        print(position);
-        print(weaponDirection);
-        }
+    if (weaponDirection != null) {
+      final bullet = BulletComponent(velocity: 1000)
+        ..position = position.clone()
+        ..lifetime = 1000 // example lifetime
+        ..angle = weaponDirection!;
+
+      bullets.add(bullet);
+      gameRef.add(bullet);
+    }
   }
 
   @override
@@ -37,25 +35,26 @@ class Weapon extends SpriteComponent with HasGameRef<RogalikGame> {
     }
 
     bullets.removeWhere((bullet) => bullet.lifetime <= 0);
-    currentTime += dt; // Convert 
-    if(currentTime - lastBulletTime > 1){
+    currentTime += dt;
+    if (currentTime - lastBulletTime > 1) {
+      // example fire rate
       lastBulletTime = currentTime;
       shoot();
     }
   }
+
   @override
   Future<void> onLoad() async {
-    print("Loading weapon sprite");
+    super.onLoad();
     sprite = await gameRef.loadSprite('weapon-sprite.png');
   }
 
   void updateWeaponPosition(Vector2 mousePosition) {
-    if (player != null) {
-    final Vector2 direction = mousePosition - player!.position;
-    direction.normalize();
-    position = player!.position + direction * distanceFromPlayer;
-    weaponDirection = math.atan2(direction.y, direction.x);
-  }
+    if (playerComponent != null) {
+      final Vector2 direction = mousePosition - playerComponent!.position;
+      direction.normalize();
+      position = playerComponent!.position + direction * distanceFromPlayer;
+      weaponDirection = math.atan2(direction.y, direction.x);
+    }
   }
 }
-  

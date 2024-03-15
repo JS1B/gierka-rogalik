@@ -3,15 +3,18 @@ import 'package:flame/game.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flame/src/events/messages/pointer_move_event.dart' as flame;
-import 'package:game/components/weapon_component.dart';
+// import 'package:flame/src/events/messages/pointer_move_event.dart' as flame;
 
-import 'components/player_component.dart';
+import 'package:game/components/players/player_component.dart';
+import 'package:game/components/weapon_component.dart';
+import 'package:game/components/enemies/types/zombie_enemy_component.dart';
 
 class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
-  late Player player;
+  late PlayerComponent playerComponent;
+  late Weapon weaponComponent;
   late SpriteComponent background;
-  late Weapon weapon;
+  late ZombieEnemyComponent zombieEnemy;
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -20,20 +23,21 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
     background = await loadBackground();
     add(background);
 
-    // Load the player
-    player = Player();
-    weapon = Weapon();
-    weapon.position = Vector2(100, 100);
-    weapon.player = player; // Set the player reference
-    await add(player);
-    await add(weapon);
+    // Initialize and add the player component
+    playerComponent = PlayerComponent();
+    await add(playerComponent);
+
+    // Initialize and add the weapon component
+    weaponComponent = Weapon(playerComponent);
+    await add(weaponComponent);
+
+    this.zombieEnemy = ZombieEnemyComponent();
+    await this.add(zombieEnemy);
   }
 
   @override
   KeyEventResult onKeyEvent(
-    KeyEvent event,
-    Set<LogicalKeyboardKey> keysPressed,
-  ) {
+      KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     Vector2 direction = Vector2.zero();
 
     if (keysPressed.contains(LogicalKeyboardKey.keyW)) {
@@ -49,7 +53,7 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
       direction.add(Vector2(1, 0));
     }
 
-    player.setTargetDirection(direction);
+    playerComponent.setTargetDirection(direction);
 
     return KeyEventResult.handled;
   }
@@ -62,19 +66,20 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
     final paint = Paint()
       ..colorFilter = ColorFilter.mode(
         Colors.black.withOpacity(0.6),
-        BlendMode.darken, // Use the darken blend mode
+        BlendMode.darken,
       );
 
     return SpriteComponent(
       sprite: sprite,
       size: size,
-      paint: paint, // Apply the custom paint
+      paint: paint,
     );
   }
 
-@override
-void onPointerMove(flame.PointerMoveEvent event) {
-    // Update weapon position based on mouse movement
-    weapon.updateWeaponPosition(Vector2(event.localPosition.x, event.localPosition.y));
-  }
+  // @override
+  // void onPointerMove(flame.PointerMoveEvent event) {
+  //   // Update weapon position based on mouse movement
+  //   weaponComponent.updateWeaponPosition(
+  //       Vector2(event.localPosition, event.localPosition.dy));
+  // }
 }
