@@ -10,7 +10,6 @@ FROM alpine:latest
 WORKDIR /app
 
 COPY --from=builder /app/rogalik-backend .
-RUN chmod +x rogalik-backend
 
 COPY .env .
 CMD [ "./rogalik-backend" ]
