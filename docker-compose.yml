@@ -6,13 +6,13 @@ services:
     ports:
       - ${MONGO_PORT}:${MONGO_PORT}
     networks:
-      - rogalic_network
+      - rogalik_network
     volumes:
       - ./db/mongo:/data/db
   postgres:
     image: postgres:14.1-alpine
     networks:
-      - rogalic_network
+      - rogalik_network
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -21,7 +21,20 @@ services:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - ./db/postgres:/var/lib/postgresql/data
+  rogalik_backend:
+    container_name: backend
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+      - postgres
+    networks:
+      - rogalik_network
+    restart: on-failure
 
 networks:
-  rogalic_network:
+  rogalik_network:
     driver: bridge
