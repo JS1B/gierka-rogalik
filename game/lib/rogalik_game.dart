@@ -3,7 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flame/src/events/messages/pointer_move_event.dart' as flame;
+import 'package:flame/src/events/messages/pointer_move_event.dart' as flame;
 
 import 'package:game/components/players/player_component.dart';
 import 'package:game/components/weapon_component.dart';
@@ -31,8 +31,8 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
     weaponComponent = Weapon(playerComponent);
     await add(weaponComponent);
 
-    this.zombieEnemy = ZombieEnemyComponent();
-    await this.add(zombieEnemy);
+    // this.zombieEnemy = ZombieEnemyComponent();
+    // await this.add(zombieEnemy);
   }
 
   @override
@@ -76,10 +76,10 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
     );
   }
 
-  // @override
-  // void onPointerMove(flame.PointerMoveEvent event) {
-  //   // Update weapon position based on mouse movement
-  //   weaponComponent.updateWeaponPosition(
-  //       Vector2(event.localPosition, event.localPosition.dy));
-  // }
+  @override
+  void onPointerMove(flame.PointerMoveEvent event) {
+    // Update weapon position based on mouse movement
+    weaponComponent.updateWeaponPosition(
+        Vector2(event.localPosition.x, event.localPosition.y));
+  }
 }

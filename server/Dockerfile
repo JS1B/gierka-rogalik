@@ -11,5 +11,4 @@ WORKDIR /app
 
 COPY --from=builder /app/rogalik-backend .
 
-COPY .env .
 CMD [ "./rogalik-backend" ]
