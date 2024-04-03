@@ -3,12 +3,12 @@ import 'package:flame/extensions.dart';
 import 'package:game/components/enemies/enemy.dart';
 import 'package:game/components/common/entity_stats.dart';
 
-class Zombie extends Enemy {
-  Zombie(EntityStats stats) : super(stats);
+class Goblin extends Enemy {
+  Goblin(EntityStats stats) : super(stats);
 
   @override
   void move(double dt, Vector2 target_position) {
-    // Move towards the target - PI
+    // Move towards the target - PD
     // #TODO
     super.move(dt, target_position);
   }
