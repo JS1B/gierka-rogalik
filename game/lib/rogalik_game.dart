@@ -7,13 +7,17 @@ import 'package:flutter/services.dart';
 
 import 'package:game/components/players/player_component.dart';
 import 'package:game/components/weapon_component.dart';
-import 'package:game/components/enemies/types/zombie_enemy_component.dart';
+import 'package:game/components/enemies/enemy_component.dart';
+import 'package:game/components/enemies/enemy_factory.dart';
+import 'package:game/config/game_config.dart';
 
 class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
   late PlayerComponent playerComponent;
   late Weapon weaponComponent;
   late SpriteComponent background;
-  late ZombieEnemyComponent zombieEnemy;
+  List<EnemyComponent> enemyComponents = [];
+
+  late GameConfigLoader _configLoader;
 
   @override
   Future<void> onLoad() async {
@@ -21,18 +25,19 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
 
     // Load the background
     background = await loadBackground();
-    add(background);
+    this.add(background);
 
     // Initialize and add the player component
     playerComponent = PlayerComponent();
-    await add(playerComponent);
+    await this.add(playerComponent);
 
     // Initialize and add the weapon component
     weaponComponent = Weapon(playerComponent);
-    await add(weaponComponent);
+    await this.add(weaponComponent);
 
-    this.zombieEnemy = ZombieEnemyComponent();
-    await this.add(zombieEnemy);
+    this._configLoader = GameConfigLoader();
+    await this._configLoader.load('assets/config.yaml');
+    await this.addEnemy('zombie');
   }
 
   @override
@@ -54,6 +59,13 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
     }
 
     playerComponent.setTargetDirection(direction);
+
+    if (keysPressed.contains(LogicalKeyboardKey.keyK)) {
+      this.addEnemy('zombie');
+    }
+    if (keysPressed.contains(LogicalKeyboardKey.keyL)) {
+      this.removeRandomEnemy();
+    }
 
     return KeyEventResult.handled;
   }
@@ -82,4 +94,21 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
   //   weaponComponent.updateWeaponPosition(
   //       Vector2(event.localPosition, event.localPosition.dy));
   // }
+
+  Future<void> addEnemy(String type) async {
+    var enemyStats = this._configLoader.getEntityStats(type);
+    var enemy = EnemyFactory.createEnemy(type, enemyStats);
+
+    var enemyComponent = await EnemyComponent(enemy);
+    this.enemyComponents.add(enemyComponent);
+    this.add(enemyComponent);
+  }
+
+  void removeRandomEnemy() {
+    if (this.enemyComponents.isEmpty) return;
+
+    var enemyComponent = this.enemyComponents[0];
+    this.remove(enemyComponent);
+    this.enemyComponents.remove(enemyComponent);
+  }
 }

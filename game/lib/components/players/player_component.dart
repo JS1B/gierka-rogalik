@@ -28,8 +28,7 @@ class PlayerComponent extends SpriteComponent with HasGameRef<RogalikGame> {
     super.update(dt);
     this.player.update(dt);
 
-    Vector2 velocity = this.player.currentDirection * this.player.maxSpeed * dt;
-    this.position.add(velocity);
+    this.position = this.player.position;
   }
 
   void setTargetDirection(Vector2 direction) {
