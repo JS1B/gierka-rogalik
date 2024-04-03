@@ -2,9 +2,9 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import 'package:game/config/game_config.dart';
-import 'package:game/rogalik_game.dart';
-import 'package:game/components/enemies/enemy.dart';
-import 'package:game/components/common/healthbar_component.dart';
+import 'package:game/game/rogalik_game.dart';
+import 'package:game/entities/enemies/enemy.dart';
+import 'package:game/components/ui/healthbar_component.dart';
 
 class EnemyComponent extends SpriteComponent with HasGameRef<RogalikGame> {
   late Enemy enemy;

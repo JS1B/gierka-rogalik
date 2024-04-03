@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:game/components/common/entity_stats.dart';
+import 'package:game/entities/common/entity_stats.dart';
 import 'package:yaml/yaml.dart';
 
 class GameConfigLoader {

@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 
-import 'package:game/components/common/entity_stats.dart';
+import 'package:game/entities/common/entity_stats.dart';
 
 class Player {
   EntityStats stats;
