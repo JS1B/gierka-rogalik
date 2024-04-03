@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flame/src/events/messages/pointer_move_event.dart' as flame;
 
-import 'package:game/components/players/player_component.dart';
-import 'package:game/components/weapon_component.dart';
+import 'package:game/components/player/player_component.dart';
+import 'package:game/components/player/weapon_component.dart';
 import 'package:game/components/enemies/enemy_component.dart';
-import 'package:game/components/enemies/enemy_factory.dart';
+import 'package:game/entities/enemies/enemy_factory.dart';
 import 'package:game/config/game_config.dart';
 
 class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
