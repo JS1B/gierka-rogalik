@@ -1,51 +1,43 @@
-import 'dart:math';
-import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 
+import 'package:game/entities/common/entity.dart';
 import 'package:game/entities/common/entity_stats.dart';
 
-class Enemy {
-  EntityStats stats;
-  Vector2 position = Vector2.zero();
-
-  Enemy(this.stats);
+class Enemy extends Entity {
+  Enemy(EntityStats stats) : super(stats);
 
   /// Perform all the actions for the enemy
-  void update(double dt, Vector2 target_position) {
-    this.move(dt, target_position);
-    this.regenerate(dt);
-    if (this.canAttack(target_position)) {
+  @override
+  void update(double dt) {
+    super.update(dt);
+    if (this.canAttack()) {
       this.attack();
     }
   }
 
-  /// Move towards the target - P
-  void move(double dt, Vector2 target_position) {
-    // Calculate the direction from enemy to target
-    Vector2 direction = target_position - this.position;
-    direction.normalize();
-
-    // Calculate the velocity and update the position
-    Vector2 velocity = direction * this.stats.maxSpeed * dt;
-
-    if (this.position.distanceTo(target_position) < 1) {
-      velocity = Vector2.zero();
+  @override
+  void move(double dt) {
+    // If the distance to the target is very small, stop moving
+    if (this.target_direction.length < 1) {
+      this.current_direction = Vector2.zero();
+      return;
     }
-    this.position += velocity;
-  }
+    // Gradually adjust the current direction towards the desired direction
+    this
+        .current_direction
+        .lerp(this.target_direction, this.stats.turningSpeed * dt);
 
-  /// Regenerate health
-  void regenerate(double dt) {
-    if (this.stats.health >= this.stats.maxHealth) return;
+    // Calculate the velocity based on the current direction and max speed
+    this.current_direction.normalize();
+    Vector2 velocity = this.current_direction * this.stats.maxSpeed;
 
-    var h = this.stats.health;
-    this.stats.health =
-        min(h + this.stats.regenRate * dt, this.stats.maxHealth);
+    // Update the position
+    this.position.add(velocity * dt);
   }
 
   /// Check if attack can be performed
-  bool canAttack(Vector2 target_position) {
-    double d = this.position.distanceTo(target_position);
-    return d < this.stats.attackRange;
+  bool canAttack() {
+    return this.target_direction.length < this.stats.attackRange;
   }
 
   /// Perform attack
