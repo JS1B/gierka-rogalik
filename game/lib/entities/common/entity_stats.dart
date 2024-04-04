@@ -1,6 +1,4 @@
 class EntityStats {
-  double speed = 0;
-
   double maxSpeed;
   double turningSpeed;
   double deceleration;
@@ -20,35 +18,35 @@ class EntityStats {
   double critMultiplier;
 
   EntityStats(
-      {this.maxSpeed = 100,
-      this.turningSpeed = 5.0,
-      this.deceleration = 0.0,
-      this.health = 1,
-      this.regenRate = 0,
-      this.maxHealth = 1,
-      this.armor = 0,
-      this.armorPenetration = 0,
-      this.attackRange = 32,
-      this.attackPower = 1,
-      this.attackSpeed = 1,
-      this.critChance = 0.0,
-      this.critMultiplier = 2.0});
+      this.maxSpeed,
+      this.turningSpeed,
+      this.deceleration,
+      this.health,
+      this.regenRate,
+      this.maxHealth,
+      this.armor,
+      this.armorPenetration,
+      this.attackRange,
+      this.attackPower,
+      this.attackSpeed,
+      this.critChance,
+      this.critMultiplier);
 
-  // Add a factory constructor to create EnemyStats object from a map like YAML
+  // Add a factory constructor to create EnemyStats object from a map
   factory EntityStats.fromMap(Map<String, dynamic> map) {
     return EntityStats(
-        maxSpeed: map['maxSpeed'] ?? 100,
-        turningSpeed: map['turningSpeed'] ?? 5,
-        deceleration: map['deceleration'] ?? 0,
-        health: map['health'] ?? 1,
-        regenRate: map['regenRate'] ?? 0,
-        maxHealth: map['maxHealth'] ?? 1,
-        armor: map['armor'] ?? 0,
-        armorPenetration: map['armorPenetration'] ?? 0,
-        attackRange: map['attackRange'] ?? 32,
-        attackPower: map['attackPower'] ?? 1,
-        attackSpeed: map['attackSpeed'] ?? 1,
-        critChance: map['critChance'] ?? 0.0,
-        critMultiplier: map['critMultiplier'] ?? 2.0);
+        map['maxSpeed'] ?? 0.0,
+        map['turningSpeed'] ?? 0.0,
+        map['deceleration'] ?? 0.0,
+        map['health'] ?? 1,
+        map['regenRate'] ?? 0,
+        map['maxHealth'] ?? 1,
+        map['armor'] ?? 0,
+        map['armorPenetration'] ?? 0,
+        map['attackRange'] ?? 1,
+        map['attackPower'] ?? 1,
+        map['attackSpeed'] ?? 1,
+        map['critChance'] ?? 0.0,
+        map['critMultiplier'] ?? 1.0);
   }
 }
