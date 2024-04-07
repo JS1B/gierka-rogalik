@@ -5,13 +5,11 @@ import 'package:game/entities/common/entity_stats.dart';
 
 /// Base class for all entities in the game
 /// Provides health regeneration
-/// Extend this class to create new entities.
 abstract class Entity {
   EntityStats stats;
   Vector2 position = Vector2.zero();
 
-  Vector2 target_direction = Vector2.zero();
-  Vector2 current_direction = Vector2.zero();
+  Vector2 target_distance = Vector2.zero();
 
   Entity(EntityStats this.stats);
 
@@ -33,7 +31,7 @@ abstract class Entity {
         min(h + this.stats.regenRate * dt, this.stats.maxHealth);
   }
 
-  void setTargetDirection(Vector2 direction) {
-    this.target_direction = direction;
+  void setTargetDistance(Vector2 distance) {
+    this.target_distance = distance;
   }
 }
