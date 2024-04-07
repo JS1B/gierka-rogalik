@@ -32,6 +32,7 @@ class PlayerComponent extends SpriteComponent with HasGameRef<RogalikGame> {
   }
 
   void setTargetDirection(Vector2 direction) {
-    this.player.setTargetDirection(direction);
+    // Treat player target direction as entity's ditance from target
+    this.player.setTargetDistance(direction);
   }
 }

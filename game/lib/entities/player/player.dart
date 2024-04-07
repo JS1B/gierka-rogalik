@@ -5,18 +5,20 @@ import 'package:game/entities/common/entity.dart';
 import 'package:game/entities/common/entity_stats.dart';
 
 class Player extends Entity {
+  Vector2 current_direction = Vector2.zero();
+
   Player(EntityStats stats) : super(stats);
 
   /// Move in a given direction with max speed and turning speed
   @override
   void move(double dt) {
-    bool moveCommand = this.target_direction.length > 0;
+    bool moveCommand = this.target_distance.length > 0;
     if (moveCommand) {
       // Gradually adjust the current direction towards the desired direction
       // with a restricted turning rate
       this
           .current_direction
-          .lerp(this.target_direction, this.stats.turningSpeed * dt);
+          .lerp(this.target_distance, this.stats.turningSpeed * dt);
     } else {
       this.decelerate(dt);
     }

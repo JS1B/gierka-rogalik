@@ -41,7 +41,7 @@ class EnemyComponent extends SpriteComponent with HasGameRef<RogalikGame> {
   @override
   void update(double dt) {
     super.update(dt);
-    this.enemy.setTargetDirection(
+    this.enemy.setTargetDistance(
         gameRef.playerComponent.player.position - this.enemy.position);
     this.enemy.update(dt);
 
