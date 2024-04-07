@@ -1,7 +1,7 @@
 import 'dart:ui';
-
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+
 import 'package:game/game/rogalik_game.dart';
 import 'package:game/scenes/scene.dart';
 

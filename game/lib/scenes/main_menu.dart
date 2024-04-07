@@ -10,21 +10,21 @@ import 'package:game/scenes/first_level.dart';
 import 'package:game/scenes/scene.dart';
 
 class MainMenuScene extends Scene {
-  MainMenuScene(SceneManager sceneManager) : super(sceneManager);
   SpriteComponent? background;
-  CustomTextComponent? Title;
+  CustomTextComponent? title;
   List<CustomButtonComponent>? buttons;
+
+  MainMenuScene(SceneManager sceneManager) : super(sceneManager);
 
   @override
   void update(double dt) {
-    if (this.Title == null) return;
-    this.Title!.update(dt);
+    super.update(dt);
+    if (this.title != null) this.title!.update(dt);
   }
 
   @override
   void render(Canvas canvas) {
-    if (this.Title == null) return;
-    this.Title!.render(canvas);
+    if (this.title != null) this.title!.render(canvas);
   }
 
   @override
@@ -33,8 +33,12 @@ class MainMenuScene extends Scene {
       sprite: await this.gameRef.loadSprite('main-menu-background.png'),
       size: this.gameRef.size,
     );
-    this.Title = CustomTextComponent(
+    this.add(this.background!);
+
+    this.title = CustomTextComponent(
         'Mooncats', this.gameRef, {'y_offset': 0.1, 'font_size': 0.08});
+    this.add(this.title!);
+
     this.buttons = [
       CustomButtonComponent(
           'Play', this.gameRef, {'y_offset': 0.5, 'font_size': 0.05}, () {
@@ -47,27 +51,18 @@ class MainMenuScene extends Scene {
         exit(0);
       }),
     ];
-
-    this.add(this.background!);
-    this.add(Title!);
-    for (var button in buttons!) {
-      this.add(button);
-    }
+    this.buttons!.forEach(this.add);
   }
 
   @override
   void onExit() {
-    this.remove(this.background!);
-    this.remove(this.Title!);
-    for (var button in buttons!) {
-      this.remove(button);
-    }
+    this.removeAll(this.children);
   }
 
   @override
   void onGameResize(Vector2 gameSize) {
     super.onGameResize(gameSize);
-    if (this.background == null || this.Title == null || this.buttons == null)
+    if (this.background == null || this.title == null || this.buttons == null)
       return;
 
     final imgWidth = background!.sprite!.image.width.toDouble();
@@ -93,10 +88,7 @@ class MainMenuScene extends Scene {
     this.background!.size = Vector2(drawWidth, drawHeight);
     this.background!.position = Vector2(dx, dy);
 
-    this.Title!.setTextStyle();
-    for (var button in this.buttons!) {
-      button.setTextStyle();
-    }
+    this.title!.updateTextStyle();
   }
 
   @override

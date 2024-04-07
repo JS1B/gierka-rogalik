@@ -1,13 +1,12 @@
-import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:game/components/enemies/enemy_component.dart';
 import 'package:game/components/player/player_component.dart';
 import 'package:game/components/player/weapon_component.dart';
 import 'package:game/entities/enemies/enemy_factory.dart';
 import 'package:game/game/scene_manager.dart';
-
 import 'package:game/scenes/scene.dart';
 
 class FirstLevelScene extends Scene {
@@ -54,8 +53,8 @@ class FirstLevelScene extends Scene {
     super.onGameResize(gameSize);
     if (this.background == null) return;
 
-    final imgWidth = background!.sprite!.image.width.toDouble();
-    final imgHeight = background!.sprite!.image.height.toDouble();
+    final imgWidth = this.background!.sprite!.image.width.toDouble();
+    final imgHeight = this.background!.sprite!.image.height.toDouble();
 
     final imageRatio = imgWidth / imgHeight;
     final canvasRatio = gameSize.x / gameSize.y;

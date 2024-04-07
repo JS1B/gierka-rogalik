@@ -5,57 +5,59 @@ import 'package:flutter/material.dart';
 
 class CustomButtonComponent extends PositionComponent
     with TapCallbacks, HoverCallbacks {
-  late final Map<String, dynamic> config;
-  late final String text;
-  late TextPainter buttonPainter;
-  late double textScaleModifier = 0.0;
-  late final Function onTapFunction;
-  FlameGame gameRef;
+  final Map<String, dynamic> _config;
+  final String text;
+  final Function onTapFunction;
+  final FlameGame _gameRef;
+  late TextPainter _buttonPainter;
+  double _textScaleModifier = 0.0;
 
   CustomButtonComponent(
-      this.text, this.gameRef, this.config, this.onTapFunction) {
-    setTextStyle();
+      this.text, this._gameRef, this._config, this.onTapFunction) {
+    this.anchor = Anchor.center;
+    this._updateTextStyle();
   }
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    buttonPainter.layout();
-    buttonPainter.paint(canvas, Vector2.zero().toOffset());
+    this._buttonPainter.layout();
+    this._buttonPainter.paint(canvas, Vector2.zero().toOffset());
   }
 
   @override
-  void update(double dt) {
-    super.update(dt);
+  void onGameResize(Vector2 gameSize) {
+    super.onGameResize(gameSize);
+    this._updateTextStyle();
   }
 
   @override
   void onTapUp(TapUpEvent event) {
-    textScaleModifier = 0;
-    onTapFunction();
-    setTextStyle();
+    this._textScaleModifier = 0.0;
+    this._updateTextStyle();
+    this.onTapFunction();
   }
 
   @override
   void onTapDown(TapDownEvent event) {
-    textScaleModifier = -0.005;
-    setTextStyle();
+    this._textScaleModifier = -0.005;
+    this._updateTextStyle();
   }
 
   @override
   void onHoverEnter() {
-    textScaleModifier = 0.005;
-    setTextStyle();
+    this._textScaleModifier = 0.005;
+    this._updateTextStyle();
   }
 
   @override
   void onHoverExit() {
-    textScaleModifier = 0;
-    setTextStyle();
+    this._textScaleModifier = 0.0;
+    this._updateTextStyle();
   }
 
-  void setTextStyle() {
-    buttonPainter = TextPainter(
+  void _updateTextStyle() {
+    this._buttonPainter = TextPainter(
       text: TextSpan(
         text: this.text,
         style: TextStyle(
@@ -66,16 +68,17 @@ class CustomButtonComponent extends PositionComponent
             Shadow(offset: Offset(-5, 5), color: Colors.white),
           ],
           color: Colors.black,
-          fontSize: gameRef.size.x * (config['font_size'] + textScaleModifier),
+          fontSize: this._gameRef.size.length *
+              (this._config['font_size'] + this._textScaleModifier),
           fontFamily: 'MainFont',
         ),
       ),
       textDirection: TextDirection.ltr,
     );
 
-    buttonPainter.layout();
-    size = Vector2(buttonPainter.width, buttonPainter.height);
-    anchor = Anchor.center;
-    position = Vector2(gameRef.size.x / 2, gameRef.size.y * config['y_offset']);
+    this._buttonPainter.layout();
+    this.size = Vector2(this._buttonPainter.width, this._buttonPainter.height);
+    this.position = Vector2(this._gameRef.size.x / 2,
+        this._gameRef.size.y * this._config['y_offset']);
   }
 }

@@ -9,7 +9,7 @@ class CustomTextComponent extends PositionComponent {
   FlameGame gameRef;
 
   CustomTextComponent(this.text, this.gameRef, this.config) {
-    this.setTextStyle();
+    this.updateTextStyle();
   }
 
   @override
@@ -23,12 +23,7 @@ class CustomTextComponent extends PositionComponent {
             gameRef.size.y * config['y_offset']));
   }
 
-  @override
-  void update(double dt) {
-    super.update(dt);
-  }
-
-  void setTextStyle() {
+  void updateTextStyle() {
     this._textPainter = TextPainter(
       text: TextSpan(
         text: this.text,
