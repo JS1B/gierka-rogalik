@@ -4,17 +4,20 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 class CustomButtonComponent extends PositionComponent
-    with TapCallbacks, HoverCallbacks {
+    with TapCallbacks, HoverCallbacks, HasGameRef<FlameGame> {
   final Map<String, dynamic> _config;
   final String text;
   final Function onTapFunction;
-  final FlameGame _gameRef;
   late TextPainter _buttonPainter;
   double _textScaleModifier = 0.0;
 
-  CustomButtonComponent(
-      this.text, this._gameRef, this._config, this.onTapFunction) {
+  CustomButtonComponent(this.text, this._config, this.onTapFunction) {
     this.anchor = Anchor.center;
+  }
+
+  @override
+  void onLoad() async {
+    await super.onLoad();
     this._updateTextStyle();
   }
 
@@ -68,7 +71,7 @@ class CustomButtonComponent extends PositionComponent
             Shadow(offset: Offset(-5, 5), color: Colors.white),
           ],
           color: Colors.black,
-          fontSize: this._gameRef.size.length *
+          fontSize: this.gameRef.size.length *
               (this._config['font_size'] + this._textScaleModifier),
           fontFamily: 'MainFont',
         ),
@@ -78,7 +81,7 @@ class CustomButtonComponent extends PositionComponent
 
     this._buttonPainter.layout();
     this.size = Vector2(this._buttonPainter.width, this._buttonPainter.height);
-    this.position = Vector2(this._gameRef.size.x / 2,
-        this._gameRef.size.y * this._config['y_offset']);
+    this.position = Vector2(this.gameRef.size.x / 2,
+        this.gameRef.size.y * this._config['y_offset']);
   }
 }

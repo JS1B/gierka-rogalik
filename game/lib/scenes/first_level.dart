@@ -1,56 +1,44 @@
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:game/components/enemies/enemy_component.dart';
 import 'package:game/components/player/player_component.dart';
 import 'package:game/components/player/weapon_component.dart';
 import 'package:game/entities/enemies/enemy_factory.dart';
-import 'package:game/game/scene_manager.dart';
 import 'package:game/scenes/scene.dart';
 
 class FirstLevelScene extends Scene {
-  FirstLevelScene(SceneManager sceneManager) : super(sceneManager);
   SpriteComponent? background;
 
-  @override
-  void update(double dt) {}
+  late Weapon weaponComponent;
+  late List<EnemyComponent> enemyComponents;
+
+  FirstLevelScene() : super();
 
   @override
-  void render(Canvas canvas) {}
+  void onLoad() async {
+    await super.onLoad();
 
-  @override
-  void onEnter() async {
     this.background = SpriteComponent(
       sprite: await this.gameRef.loadSprite('background.jpg'),
       size: this.gameRef.size,
     );
+    this.add(this.background!);
 
     this.gameRef.playerComponent = PlayerComponent();
-    this.gameRef.weaponComponent = Weapon(this.gameRef.playerComponent);
+    this.add(this.gameRef.playerComponent);
 
-    this.add(this.background!);
-    await this.add(this.gameRef.playerComponent);
-    await this.add(this.gameRef.weaponComponent);
+    this.weaponComponent = Weapon(this.gameRef.playerComponent);
+    this.add(this.weaponComponent);
+
+    this.enemyComponents = [];
     await this.addEnemy('zombie');
-  }
-
-  @override
-  void onExit() {
-    this.remove(this.background!);
-    this.remove(this.gameRef.playerComponent);
-    this.remove(this.gameRef.weaponComponent);
-    if (this.gameRef.enemyComponents.isNotEmpty) {
-      for (var enemyComponent in this.gameRef.enemyComponents) {
-        this.remove(enemyComponent);
-      }
-      this.gameRef.enemyComponents.clear();
-    }
   }
 
   @override
   void onGameResize(Vector2 gameSize) {
     super.onGameResize(gameSize);
+
     if (this.background == null) return;
 
     final imgWidth = this.background!.sprite!.image.width.toDouble();
@@ -62,8 +50,8 @@ class FirstLevelScene extends Scene {
     double drawWidth, drawHeight, dx, dy;
 
     if (imageRatio > canvasRatio) {
-      drawHeight = gameSize.y;
       drawWidth = gameSize.y * imageRatio;
+      drawHeight = gameSize.y;
       dx = (gameSize.x - drawWidth) / 2;
       dy = 0;
     } else {
@@ -73,8 +61,8 @@ class FirstLevelScene extends Scene {
       dy = (gameSize.y - drawHeight) / 2;
     }
 
-    this.background!.size = Vector2(drawWidth, drawHeight);
     this.background!.position = Vector2(dx, dy);
+    this.background!.size = Vector2(drawWidth, drawHeight);
   }
 
   @override
@@ -109,15 +97,15 @@ class FirstLevelScene extends Scene {
     var enemy = EnemyFactory.createEnemy(type, enemyStats);
 
     var enemyComponent = await EnemyComponent(enemy);
-    this.gameRef.enemyComponents.add(enemyComponent);
+    this.enemyComponents.add(enemyComponent);
     this.add(enemyComponent);
   }
 
   void removeRandomEnemy() {
-    if (this.gameRef.enemyComponents.isEmpty) return;
+    if (this.enemyComponents.isEmpty) return;
 
-    var enemyComponent = this.gameRef.enemyComponents[0];
+    var enemyComponent = this.enemyComponents[0];
     this.remove(enemyComponent);
-    this.gameRef.enemyComponents.remove(enemyComponent);
+    this.enemyComponents.remove(enemyComponent);
   }
 }

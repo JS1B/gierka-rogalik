@@ -1,19 +1,42 @@
-import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
 import 'package:game/game/rogalik_game.dart';
-import 'package:game/game/scene_manager.dart';
 
 abstract class Scene extends Component with HasGameRef<RogalikGame> {
-  Scene(this.sceneManager);
+  SpriteComponent? background;
 
-  SceneManager sceneManager;
+  Scene() : super();
 
-  void render(Canvas canvas);
-  void update(double dt);
-  void onEnter();
-  void onExit();
-  void onGameResize(Vector2 gameSize);
+  @override
+  void onGameResize(Vector2 gameSize) {
+    super.onGameResize(gameSize);
+
+    if (this.background == null) return;
+
+    final imgWidth = this.background!.sprite!.image.width.toDouble();
+    final imgHeight = this.background!.sprite!.image.height.toDouble();
+
+    final imageRatio = imgWidth / imgHeight;
+    final canvasRatio = gameSize.x / gameSize.y;
+
+    double drawWidth, drawHeight, dx, dy;
+
+    if (imageRatio > canvasRatio) {
+      drawWidth = gameSize.x;
+      drawHeight = gameSize.x / imageRatio;
+      dx = 0;
+      dy = (gameSize.y - drawHeight) / 2;
+    } else {
+      drawHeight = gameSize.y;
+      drawWidth = gameSize.y * imageRatio;
+      dx = (gameSize.x - drawWidth) / 2;
+      dy = 0;
+    }
+
+    this.background!.position = Vector2(dx, dy);
+    this.background!.size = Vector2(drawWidth, drawHeight);
+  }
+
   void onKeyPress(KeyEvent event, Set<LogicalKeyboardKey> keysPressed);
 }

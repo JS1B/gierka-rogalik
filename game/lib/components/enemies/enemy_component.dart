@@ -35,14 +35,15 @@ class EnemyComponent extends SpriteComponent with HasGameRef<RogalikGame> {
         padding: healthBarConfig['padding'],
         backgroundColor: Color(healthBarConfig['backgroundColor']),
         fillColor: Color(healthBarConfig['fillColor']));
+    this.add(this.healthBarComponent);
   }
 
   @override
   void update(double dt) {
-    super.update(dt);
     this.enemy.update(dt, gameRef.playerComponent.player.position);
-
     this.healthBarComponent.updateHealth(this.enemy.stats.health.toInt());
+
+    super.update(dt);
 
     // Update the position of the component
     this.position = this.enemy.position;
@@ -53,13 +54,10 @@ class EnemyComponent extends SpriteComponent with HasGameRef<RogalikGame> {
     super.render(canvas);
 
     // Render enemy name
-    this.renderName(canvas);
-
-    // Render the health bar
-    this.healthBarComponent.render(canvas);
+    this._renderName(canvas);
   }
 
-  void renderName(Canvas canvas) {
+  void _renderName(Canvas canvas) {
     this.nameTextPainter = TextPainter(
       text: TextSpan(
         text: this.enemy.runtimeType.toString(),

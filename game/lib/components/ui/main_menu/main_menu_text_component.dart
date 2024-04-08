@@ -2,13 +2,18 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextComponent extends PositionComponent {
+class CustomTextComponent extends PositionComponent with HasGameRef<FlameGame> {
   late final Map<String, dynamic> config;
   late TextPainter _textPainter;
   final String text;
-  FlameGame gameRef;
 
-  CustomTextComponent(this.text, this.gameRef, this.config) {
+  CustomTextComponent(this.text, this.config) : super() {
+    this.anchor = Anchor.center;
+  }
+
+  @override
+  void onLoad() async {
+    await super.onLoad();
     this.updateTextStyle();
   }
 
@@ -16,11 +21,10 @@ class CustomTextComponent extends PositionComponent {
   void render(Canvas canvas) {
     super.render(canvas);
 
-    this._textPainter.layout();
     this._textPainter.paint(
         canvas,
-        Offset((gameRef.size.x - this._textPainter.width) / 2,
-            gameRef.size.y * config['y_offset']));
+        Offset((this.gameRef.size.x - this._textPainter.width) / 2,
+            this.gameRef.size.y * this.config['y_offset']));
   }
 
   void updateTextStyle() {
@@ -35,10 +39,11 @@ class CustomTextComponent extends PositionComponent {
               Shadow(offset: Offset(-5, 5), color: Colors.white),
             ],
             color: Colors.black,
-            fontSize: gameRef.size.x * config['font_size'],
+            fontSize: this.gameRef.size.x * this.config['font_size'],
             fontFamily: 'MainFont'),
       ),
       textDirection: TextDirection.ltr,
     );
+    this._textPainter.layout();
   }
 }
