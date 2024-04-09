@@ -36,36 +36,6 @@ class FirstLevelScene extends Scene {
   }
 
   @override
-  void onGameResize(Vector2 gameSize) {
-    super.onGameResize(gameSize);
-
-    if (this.background == null) return;
-
-    final imgWidth = this.background!.sprite!.image.width.toDouble();
-    final imgHeight = this.background!.sprite!.image.height.toDouble();
-
-    final imageRatio = imgWidth / imgHeight;
-    final canvasRatio = gameSize.x / gameSize.y;
-
-    double drawWidth, drawHeight, dx, dy;
-
-    if (imageRatio > canvasRatio) {
-      drawWidth = gameSize.y * imageRatio;
-      drawHeight = gameSize.y;
-      dx = (gameSize.x - drawWidth) / 2;
-      dy = 0;
-    } else {
-      drawWidth = gameSize.x;
-      drawHeight = gameSize.x / imageRatio;
-      dx = 0;
-      dy = (gameSize.y - drawHeight) / 2;
-    }
-
-    this.background!.position = Vector2(dx, dy);
-    this.background!.size = Vector2(drawWidth, drawHeight);
-  }
-
-  @override
   void onKeyPress(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     Vector2 direction = Vector2.zero();
 
