@@ -75,7 +75,7 @@ class PIDController<T> {
 
     // Derivative
     T derivative = this.zero();
-    if (this.kD != 0) {
+    if (this.kD != 0 && dt > 0) {
       derivative = this.multiply(
           this.subtract(currentError, this.previousError), this.kD / dt);
     }
@@ -84,7 +84,8 @@ class PIDController<T> {
     this.previousError = currentError;
 
     // Final PID output
-    this._output = this.add(this.add(proportional, integral), derivative);
+    this._output = this
+        .multiply(this.add(this.add(proportional, integral), derivative), dt);
   }
 
   T get output => this._output;
