@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flutter/services.dart';
 
 import 'package:game/components/ui/main_menu/main_menu_button_component.dart';
@@ -52,4 +53,7 @@ class MainMenuScene extends Scene {
 
   @override
   void onKeyPress(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {}
+
+  @override
+  void onPointerMove(PointerMoveEvent event) {}
 }

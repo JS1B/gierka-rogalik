@@ -1,28 +1,33 @@
 import 'package:flame/components.dart';
+import 'package:game/components/player/player_component.dart';
 import 'package:game/components/weapons/weapon.dart';
-import 'package:game/rogalik_game.dart';
-import 'package:game/components/players/player_component.dart';
+import 'package:game/entities/common/weapon_stats.dart';
 import 'dart:math' as math;
+
+import 'package:game/game/rogalik_game.dart';
 
 class WeaponComponent extends SpriteComponent with HasGameRef<RogalikGame> {
   final PlayerComponent? playerComponent;
-  late Weapon weapon;
-  double distanceFromPlayer = 5;
+  final Weapon weapon;
+  final WeaponStats weaponStats;
+  double distanceFromPlayer = 50;
   double lastBulletTime = 0;
   double currentTime = 0;
-  double? weaponDirection;
-  WeaponComponent(this.playerComponent, this.weapon);
+  double weaponDirection = 0;
+  WeaponComponent(this.playerComponent, this.weapon, this.weaponStats);
     
   @override
   void update(double dt) {
     super.update(dt);
-
+    for (final bullet in weapon.bullets) {
+      bullet.update(dt);
+    }
     weapon.bullets.removeWhere((bullet) => bullet.bullet.stats.lifetime <= 0);
     currentTime += dt;
     if (currentTime - lastBulletTime > 1) {
       // example fire rate
       lastBulletTime = currentTime;
-      weapon.shoot(position.clone(), weaponDirection!);
+      weapon.shoot(position.clone(), weaponDirection);
     }
   }
 

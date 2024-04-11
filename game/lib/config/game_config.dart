@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:game/components/common/bullet_stats.dart';
-import 'package:game/components/weapons/bullets/bullet.dart';
+import 'package:game/entities/common/bullet_stats.dart';
 import 'package:game/entities/common/entity_stats.dart';
 import 'package:game/entities/common/weapon_stats.dart';
 import 'package:yaml/yaml.dart';
