@@ -1,10 +1,11 @@
+---
 # Initial new player stats
 player:
   sprite: player-sprite.png
 
   stats:
-    maxSpeed: 200.0
-    turningSpeed: 5.0
+    maxSpeed: 400.0
+    turningSpeed: 8.0
     deceleration: 0.1
 
     health: 100.0
@@ -24,6 +25,15 @@ player:
 # Generic enemy stats
 enemy:
   sprite: enemy-sprite.png
+
+  healthBar:
+    height: 7.0
+    padding: 2.0
+
+    backgroundColor: 0xFF000000
+    fillColor: 0xFF4CAF50
+    enableNumericDisplay: true
+
   stats:
     maxSpeed: 100.0
     turningSpeed: 5.0
@@ -55,7 +65,21 @@ zombie:
 
     attackPower: 20.0
 
+# Goblin enemy stats
+goblin:
+  sprite: goblin-sprite.png
+
+  stats:
+    maxSpeed: 150.0
+
+    health: 50.0
+    maxHealth: 50.0
+
+    critChance: 90.0
+
+# Weapons
 weapons: 
+  # Pistol stats
   gun:
     sprite: gun-sprite.png
     stats:
@@ -71,3 +95,4 @@ weapons:
         lifetime: 10.0
         width: 10.0
         height: 10.0
+

@@ -1,36 +1,76 @@
 import 'package:flame/components.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+
 import 'package:game/config/game_config.dart';
-import 'package:game/rogalik_game.dart';
+import 'package:game/game/rogalik_game.dart';
+import 'package:game/entities/enemies/enemy.dart';
+import 'package:game/components/ui/healthbar_component.dart';
 
-import '../common/entity_stats.dart';
-import 'enemy.dart';
+class EnemyComponent extends SpriteComponent with HasGameRef<RogalikGame> {
+  late Enemy enemy;
+  late TextPainter nameTextPainter;
+  late HealthBarComponent healthBarComponent;
 
-abstract class EnemyComponent extends SpriteComponent
-    with HasGameRef<RogalikGame> {
-  final Enemy enemy;
-
-  EnemyComponent(EntityStats stats) : enemy = Enemy(stats);
+  EnemyComponent(Enemy enemy)
+      : this.enemy = enemy,
+        super(anchor: Anchor.center);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    var configLoader = GameConfigLoader();
+    GameConfigLoader configLoader = GameConfigLoader();
     await configLoader.load('assets/config.yaml');
+    this.sprite = await gameRef.loadSprite(configLoader
+        .getSpritePath(this.enemy.runtimeType.toString().toLowerCase()));
 
-    enemy.stats = configLoader.getEntityStats('enemy');
-    sprite = await gameRef.loadSprite(configLoader.getSpritePath('enemy'));
+    var healthBarConfig = configLoader
+        .getHealthBarConfig(this.enemy.runtimeType.toString().toLowerCase());
+    this.healthBarComponent = HealthBarComponent(
+        this.enemy.stats.maxHealth.toInt(),
+        this.width,
+        healthBarConfig['height'],
+        this.height,
+        enableNumericDisplay: healthBarConfig['enableNumericDisplay'],
+        padding: healthBarConfig['padding'],
+        backgroundColor: Color(healthBarConfig['backgroundColor']),
+        fillColor: Color(healthBarConfig['fillColor']));
+    this.add(this.healthBarComponent);
   }
 
   @override
   void update(double dt) {
+    this.enemy.update(dt, gameRef.playerComponent.player.position);
+    this.healthBarComponent.updateHealth(this.enemy.stats.health.toInt());
+
     super.update(dt);
-    enemy.move();
+
+    // Update the position of the component
+    this.position = this.enemy.position;
   }
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
+
+    // Render enemy name
+    this._renderName(canvas);
+  }
+
+  void _renderName(Canvas canvas) {
+    this.nameTextPainter = TextPainter(
+      text: TextSpan(
+        text: this.enemy.runtimeType.toString(),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    this.nameTextPainter.layout();
+    this.nameTextPainter.paint(
+        canvas, Offset((this.width - this.nameTextPainter.width) / 2, 0));
   }
 }

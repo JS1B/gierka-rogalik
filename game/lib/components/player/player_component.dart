@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 
-import 'package:game/rogalik_game.dart';
-import 'package:game/components/players/player.dart';
+import 'package:game/game/rogalik_game.dart';
+import 'package:game/entities/player/player.dart';
 import 'package:game/config/game_config.dart';
 
 class PlayerComponent extends SpriteComponent with HasGameRef<RogalikGame> {
@@ -28,8 +28,7 @@ class PlayerComponent extends SpriteComponent with HasGameRef<RogalikGame> {
     super.update(dt);
     this.player.update(dt);
 
-    Vector2 velocity = this.player.currentDirection * this.player.maxSpeed * dt;
-    this.position.add(velocity);
+    this.position = this.player.position;
   }
 
   void setTargetDirection(Vector2 direction) {

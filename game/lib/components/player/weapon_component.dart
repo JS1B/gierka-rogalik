@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
-import 'package:game/rogalik_game.dart';
-import 'package:game/components/players/player_component.dart';
-import 'package:game/components/bullet_component.dart';
+import 'package:game/game/rogalik_game.dart';
+import 'package:game/components/player/player_component.dart';
+import 'package:game/components/player/bullet_component.dart';
 import 'dart:math' as math;
 
 class Weapon extends SpriteComponent with HasGameRef<RogalikGame> {

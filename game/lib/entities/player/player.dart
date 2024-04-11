@@ -1,9 +1,11 @@
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 
-import 'package:game/components/common/entity_stats.dart';
+import 'package:game/entities/common/entity_stats.dart';
 
 class Player {
   EntityStats stats;
+  Vector2 position = Vector2.zero();
   Vector2 _targetDirection = Vector2.zero();
   Vector2 _currentDirection = Vector2.zero();
 
@@ -25,12 +27,12 @@ class Player {
     if (this._currentDirection.length2 > 1) {
       this._currentDirection.normalize();
     }
+
+    Vector2 velocity = this._currentDirection * this.stats.maxSpeed * dt;
+    this.position += velocity;
   }
 
   void setTargetDirection(Vector2 direction) {
     this._targetDirection = direction;
   }
-
-  Vector2 get currentDirection => this._currentDirection;
-  double get maxSpeed => this.stats.maxSpeed;
 }
