@@ -7,7 +7,9 @@ import 'package:game/entities/common/entity_stats.dart';
 class Player extends Entity {
   Vector2 current_direction = Vector2.zero();
 
-  Player(EntityStats stats) : super(stats);
+  // #TODO implement the correct entity behavior
+  Player(EntityStats stats)
+      : super(stats, Vector2.all(64), position: Vector2.all(100));
 
   /// Move in a given direction with max speed and turning speed
   @override

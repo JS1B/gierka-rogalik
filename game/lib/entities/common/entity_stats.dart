@@ -12,7 +12,7 @@ class EntityStats {
 
   double attackRange;
   double attackPower;
-  double attackSpeed;
+  double attackCooldown;
 
   double critChance;
   double critMultiplier;
@@ -28,7 +28,7 @@ class EntityStats {
       this.armorPenetration,
       this.attackRange,
       this.attackPower,
-      this.attackSpeed,
+      this.attackCooldown,
       this.critChance,
       this.critMultiplier);
 
@@ -45,7 +45,7 @@ class EntityStats {
         map['armorPenetration'] ?? 0,
         map['attackRange'] ?? 1,
         map['attackPower'] ?? 1,
-        map['attackSpeed'] ?? 1,
+        map['attackCooldown'] ?? 1,
         map['critChance'] ?? 0.0,
         map['critMultiplier'] ?? 1.0);
   }
