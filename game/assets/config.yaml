@@ -1,12 +1,12 @@
 ---
-# Initial new player stats
+# Initial new player parameters
 player:
   sprite: player-sprite.png
 
   stats:
     maxSpeed: 400.0
     turningSpeed: 8.0
-    deceleration: 0.1
+    deceleration: 5.0
 
     health: 100.0
     maxHealth: 100.0
@@ -17,12 +17,12 @@ player:
 
     attackRange: 100.0
     attackPower: 10.0
-    attackSpeed: 1.0
+    attackCooldown: 1.0
 
     critChance: 0.0
     critMultiplier: 2.0
 
-# Generic enemy stats
+# Generic enemy parameters
 enemy:
   sprite: enemy-sprite.png
 
@@ -36,8 +36,8 @@ enemy:
 
   stats:
     maxSpeed: 100.0
-    turningSpeed: 5.0
-    deceleration: 0.0
+    turningSpeed: 1.0
+    # deceleration: 0.0
 
     health: 100.0
     maxHealth: 100.0
@@ -46,36 +46,54 @@ enemy:
     armor: 0.0
     armorPenetration: 0.0
 
-    attackRange: 100.0
+    attackRange: 60.0
     attackPower: 10.0
-    attackSpeed: 1.0
+    attackCooldown: 1.0
 
     critChance: 0.0
     critMultiplier: 2.0
 
-# Zombie enemy stats
+# Zombie enemy parameters
 zombie:
   sprite: zombie-sprite.png
 
   stats:
-    maxSpeed: 50.0
+    maxSpeed: 60.0
 
     maxHealth: 200.0
     regenRate: 40.0
 
     attackPower: 20.0
 
-# Goblin enemy stats
+# Goblin enemy parameters
 goblin:
-  sprite: goblin-sprite.png
+  sprite: goblin-spritesheet.png
 
   stats:
-    maxSpeed: 150.0
+    maxSpeed: 250.0
 
     health: 50.0
     maxHealth: 50.0
 
+    attackRange: 40.0
+
     critChance: 90.0
+
+# Robot enemy parameters
+robot:
+  # sprite: 
+  
+  stats:
+    maxSpeed: 175.0
+
+    health: 100.0
+    maxHealth: 100.0
+
+    armor: 20.0
+    armorPenetration: 10.0
+
+    attackRange: 150.0
+    attackPower: 20.0
 
 # Weapons
 weapons: 

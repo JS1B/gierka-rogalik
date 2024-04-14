@@ -1,38 +1,41 @@
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 
+import 'package:game/entities/common/entity.dart';
 import 'package:game/entities/common/entity_stats.dart';
 
-class Player {
-  EntityStats stats;
-  Vector2 position = Vector2.zero();
-  Vector2 _targetDirection = Vector2.zero();
-  Vector2 _currentDirection = Vector2.zero();
+class Player extends Entity {
+  Vector2 current_direction = Vector2.zero();
 
-  Player(this.stats);
+  // #TODO implement the correct entity behavior
+  Player(EntityStats stats)
+      : super(stats, Vector2.all(64), position: Vector2.all(100));
 
-  void update(double dt) {
-    bool isMoving = this._targetDirection.length2 > 0;
-    if (isMoving) {
+  /// Move in a given direction with max speed and turning speed
+  @override
+  void move(double dt) {
+    bool moveCommand = this.target_distance.length > 0;
+    if (moveCommand) {
+      // Gradually adjust the current direction towards the desired direction
+      // with a restricted turning rate
       this
-          ._currentDirection
-          .lerp(this._targetDirection, this.stats.turningSpeed * dt);
+          .current_direction
+          .lerp(this.target_distance, this.stats.turningSpeed * dt);
     } else {
-      if (this._currentDirection.length2 > 0) {
-        this
-            ._currentDirection
-            .scale((1 - this.stats.deceleration).clamp(0.0, 1.0));
-      }
-    }
-    if (this._currentDirection.length2 > 1) {
-      this._currentDirection.normalize();
+      this.decelerate(dt);
     }
 
-    Vector2 velocity = this._currentDirection * this.stats.maxSpeed * dt;
-    this.position += velocity;
+    if (this.current_direction.length > 1) {
+      this.current_direction.normalize();
+    }
+
+    Vector2 velocity = this.current_direction * this.stats.maxSpeed;
+    this.position.add(velocity * dt);
   }
 
-  void setTargetDirection(Vector2 direction) {
-    this._targetDirection = direction;
+  void decelerate(double dt) {
+    this
+        .current_direction
+        .scale((1 - this.stats.deceleration * dt).clamp(0.0, 1.0));
   }
 }

@@ -33,7 +33,7 @@ class FirstLevelScene extends Scene {
     this.addWeapon("gun");
 
     this.enemyComponents = [];
-    await this.addEnemy('zombie');
+    await this.addEnemy(EnemyType.zombie);
   }
 
   @override
@@ -56,7 +56,7 @@ class FirstLevelScene extends Scene {
     this.gameRef.playerComponent.setTargetDirection(direction);
 
     if (keysPressed.contains(LogicalKeyboardKey.keyK)) {
-      this.addEnemy('zombie');
+      this.addEnemy(EnemyType.zombie);
     }
     if (keysPressed.contains(LogicalKeyboardKey.keyL)) {
       this.removeRandomEnemy();
@@ -76,11 +76,15 @@ class FirstLevelScene extends Scene {
     this.add(this.weaponComponent);
   }
 
-  Future<void> addEnemy(String type) async {
-    var enemyStats = this.gameRef.configLoader.getEntityStats(type);
+  Future<void> addEnemy(EnemyType type) async {
+    var enemyStats = this.gameRef.configLoader.getEntityStats(type.name);
     var enemy = EnemyFactory.createEnemy(type, enemyStats);
 
-    var enemyComponent = await EnemyComponent(enemy);
+    var img = await this
+        .gameRef
+        .images
+        .load(this.gameRef.configLoader.getSpritePath(type.name));
+    var enemyComponent = await EnemyComponent(enemy: enemy, image: img);
     this.enemyComponents.add(enemyComponent);
     this.add(enemyComponent);
   }

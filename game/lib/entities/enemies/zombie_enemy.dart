@@ -1,15 +1,14 @@
-import 'package:flame/extensions.dart';
+import 'package:flame/components.dart';
 
 import 'package:game/entities/enemies/enemy.dart';
 import 'package:game/entities/common/entity_stats.dart';
 
 class Zombie extends Enemy {
-  Zombie(EntityStats stats) : super(stats);
-
-  @override
-  void move(double dt, Vector2 target_position) {
-    // Move towards the target - PI
-    // #TODO
-    super.move(dt, target_position);
+  Zombie(EntityStats stats, {Vector2? position})
+      : super(stats, Vector2.all(92), position: position) {
+    this.movementPIDC.kP = 0.02;
+    this.movementPIDC.kI = 2.0;
+    this.movementPIDC.integralLimit =
+        this.stats.maxSpeed * 0.85 / this.movementPIDC.kI;
   }
 }

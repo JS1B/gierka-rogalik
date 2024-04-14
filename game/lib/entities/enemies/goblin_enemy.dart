@@ -1,15 +1,14 @@
-import 'package:flame/extensions.dart';
+import 'package:flame/components.dart';
 
 import 'package:game/entities/enemies/enemy.dart';
 import 'package:game/entities/common/entity_stats.dart';
 
 class Goblin extends Enemy {
-  Goblin(EntityStats stats) : super(stats);
-
-  @override
-  void move(double dt, Vector2 target_position) {
-    // Move towards the target - PD
-    // #TODO
-    super.move(dt, target_position);
+  Goblin(EntityStats stats, {Vector2? position})
+      : super(stats, Vector2.all(64), position: position) {
+    this.movementPIDC.kP = 1.8;
+    this.movementPIDC.kD = 0.2;
+    this.movementPIDC.kI = 10.0;
+    this.movementPIDC.integralLimit = 4.0;
   }
 }

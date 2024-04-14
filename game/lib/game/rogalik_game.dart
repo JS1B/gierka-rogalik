@@ -1,6 +1,7 @@
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/events.dart';
+import 'package:flutter/material.dart' hide Image;
 import 'package:flame/events.dart' as flame;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
