@@ -52,11 +52,11 @@ class GameConfigLoader {
 
   BulletStats getBulletStats(String type) {
     // Get the generic weapon stats
-    var genericStats =
-        this._config['weapons'][type]['bullet']['stats'] as Map<String, dynamic>;
-
-    return BulletStats.fromMap(genericStats);
+    var bulletStats = this._config['weapons'][type]['bullet']['stats']
+        as Map<String, dynamic>;
+    return BulletStats.fromMap(bulletStats);
   }
+
   String getSpritePath(String type) {
     // Check if the type exists in the config
     if (!this._config.containsKey(type)) {
@@ -67,6 +67,22 @@ class GameConfigLoader {
       type = this.defaultType;
     }
     return this._config[type]['sprite'];
+  }
+
+  String getWeaponSpritePath(String type) {
+    // Check if the type has a sprite
+    if (!this._config['weapons'][type].containsKey('sprite')) {
+      type = this.defaultType;
+    }
+    return this._config['weapons'][type]['sprite'];
+  }
+
+  String getBulletSpritePath(String type) {
+    // Check if the type has a sprite
+    if (!this._config['weapons'][type]['bullet'].containsKey('sprite')) {
+      type = this.defaultType;
+    }
+    return this._config['weapons'][type]['bullet']['sprite'];
   }
 
   dynamic getHealthBarConfig(String type) {

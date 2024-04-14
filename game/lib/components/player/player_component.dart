@@ -15,11 +15,11 @@ class PlayerComponent extends SpriteComponent with HasGameRef<RogalikGame> {
 
     var configLoader = GameConfigLoader();
     await configLoader.load('assets/config.yaml');
-    var playerStats = configLoader.getEntityStats('player');
+    var playerStats = configLoader.getEntityStats('default');
 
     this.player = Player(playerStats);
     this.sprite =
-        await gameRef.loadSprite(configLoader.getSpritePath('player'));
+        await gameRef.loadSprite(configLoader.getSpritePath('default'));
     this.position = gameRef.size / 2;
   }
 

@@ -42,5 +42,4 @@ abstract class Scene extends Component with HasGameRef<RogalikGame> {
   void onKeyPress(KeyEvent event, Set<LogicalKeyboardKey> keysPressed);
 
   void onPointerMove(PointerMoveEvent event);
-  
 }

@@ -1,25 +1,32 @@
 import 'package:flame/components.dart';
+import 'package:game/config/game_config.dart';
 import 'dart:math' as math;
-import 'package:game/components/weapons/bullets/bullet.dart';
+import 'package:game/weapons/bullets/bullet.dart';
 import 'package:game/entities/common/bullet_stats.dart';
 import 'package:game/game/rogalik_game.dart';
 
-class BulletComponent extends SpriteComponent with HasGameRef<RogalikGame>{
+class BulletComponent extends SpriteComponent with HasGameRef<RogalikGame> {
   late Bullet bullet;
-  BulletComponent(BulletStats bulletStats) : this.bullet = Bullet(bulletStats);
+  late String type;
+  BulletComponent(BulletStats bulletStats, this.type)
+      : this.bullet = Bullet(bulletStats);
 
-   @override
+  @override
   Future<void> onLoad() async {
     super.onLoad();
-    sprite = await gameRef.loadSprite('bullet-sprite.png');
-    
+    var configLoader = GameConfigLoader();
+    await configLoader.load('assets/config.yaml');
+    this.sprite =
+        await gameRef.loadSprite(configLoader.getBulletSpritePath(type));
   }
 
   @override
   void update(double dt) {
     super.update(dt);
+
     // Update bullet position based on its velocity and angle
-    this.position.add(Vector2(math.cos(angle), math.sin(angle)) * bullet.stats.velocity * dt);
+    this.position.add(
+        Vector2(math.cos(angle), math.sin(angle)) * bullet.stats.velocity * dt);
 
     // Decrease lifetime
     bullet.stats.lifetime -= dt;

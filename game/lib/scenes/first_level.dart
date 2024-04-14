@@ -1,10 +1,10 @@
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flutter/services.dart';
+import 'package:flame/events.dart';
 
 import 'package:game/components/enemies/enemy_component.dart';
 import 'package:game/components/player/player_component.dart';
-import 'package:game/components/weapons/weapon.dart';
+import 'package:game/weapons/weapon.dart';
 import 'package:game/components/weapons/weapon_component.dart';
 import 'package:game/entities/enemies/enemy_factory.dart';
 import 'package:game/scenes/scene.dart';
@@ -14,7 +14,7 @@ class FirstLevelScene extends Scene {
 
   late WeaponComponent weaponComponent;
   late List<EnemyComponent> enemyComponents;
-
+  late PlayerComponent player;
   FirstLevelScene() : super();
 
   @override
@@ -29,9 +29,7 @@ class FirstLevelScene extends Scene {
 
     this.gameRef.playerComponent = PlayerComponent();
     this.add(this.gameRef.playerComponent);
-    print("Player component added");
-    this.addWeapon("gun");
-
+    this.addWeapon("fists");
     this.enemyComponents = [];
     await this.addEnemy(EnemyType.zombie);
   }
@@ -62,17 +60,19 @@ class FirstLevelScene extends Scene {
       this.removeRandomEnemy();
     }
   }
+
   @override
   void onPointerMove(PointerMoveEvent event) {
     this.weaponComponent.updateWeaponPosition(
-      Vector2(event.localPosition.x, event.localPosition.y));
+        Vector2(event.localPosition.x, event.localPosition.y));
   }
 
-   Future<void> addWeapon(String type) async {
+  Future<void> addWeapon(String type) async {
     var weaponStats = this.gameRef.configLoader.getWeaponStats(type);
     var bulletStats = this.gameRef.configLoader.getBulletStats(type);
-    var weapon = Weapon(bulletStats);
-    this.weaponComponent = WeaponComponent(this.gameRef.playerComponent, weapon, weaponStats);
+    var weapon = Weapon(bulletStats, type);
+    this.weaponComponent = WeaponComponent(
+        this.gameRef.playerComponent, weapon, weaponStats, this, type);
     this.add(this.weaponComponent);
   }
 
