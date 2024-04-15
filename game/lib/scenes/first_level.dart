@@ -1,18 +1,20 @@
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:flame/events.dart';
 
 import 'package:game/components/enemies/enemy_component.dart';
 import 'package:game/components/player/player_component.dart';
-import 'package:game/components/player/weapon_component.dart';
+import 'package:game/weapons/weapon.dart';
+import 'package:game/components/weapons/weapon_component.dart';
 import 'package:game/entities/enemies/enemy_factory.dart';
 import 'package:game/scenes/scene.dart';
 
 class FirstLevelScene extends Scene {
   SpriteComponent? background;
 
-  late Weapon weaponComponent;
+  late WeaponComponent weaponComponent;
   late List<EnemyComponent> enemyComponents;
-
+  late PlayerComponent player;
   FirstLevelScene() : super();
 
   @override
@@ -27,10 +29,7 @@ class FirstLevelScene extends Scene {
 
     this.gameRef.playerComponent = PlayerComponent();
     this.add(this.gameRef.playerComponent);
-
-    this.weaponComponent = Weapon(this.gameRef.playerComponent);
-    this.add(this.weaponComponent);
-
+    this.addWeapon("gun");
     this.enemyComponents = [];
     await this.addEnemy(EnemyType.zombie);
   }
@@ -60,6 +59,21 @@ class FirstLevelScene extends Scene {
     if (keysPressed.contains(LogicalKeyboardKey.keyL)) {
       this.removeRandomEnemy();
     }
+  }
+
+  @override
+  void onPointerMove(PointerMoveEvent event) {
+    this.weaponComponent.updateWeaponPosition(
+        Vector2(event.localPosition.x, event.localPosition.y));
+  }
+
+  Future<void> addWeapon(String type) async {
+    var weaponStats = this.gameRef.configLoader.getWeaponStats(type);
+    var bulletStats = this.gameRef.configLoader.getBulletStats(type);
+    var weapon = Weapon(bulletStats, type);
+    this.weaponComponent = WeaponComponent(
+        this.gameRef.playerComponent, weapon, weaponStats, this, type);
+    this.add(this.weaponComponent);
   }
 
   Future<void> addEnemy(EnemyType type) async {

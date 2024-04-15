@@ -1,5 +1,7 @@
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:game/entities/common/bullet_stats.dart';
 import 'package:game/entities/common/entity_stats.dart';
+import 'package:game/entities/common/weapon_stats.dart';
 import 'package:yaml/yaml.dart';
 
 class GameConfigLoader {
@@ -40,6 +42,21 @@ class GameConfigLoader {
     return EntityStats.fromMap(mergedStats);
   }
 
+  WeaponStats getWeaponStats(String type) {
+    // Get the generic weapon stats
+    var genericStats =
+        this._config['weapons'][type]['stats'] as Map<String, dynamic>;
+
+    return WeaponStats.fromMap(genericStats);
+  }
+
+  BulletStats getBulletStats(String type) {
+    // Get the generic weapon stats
+    var bulletStats = this._config['weapons'][type]['bullet']['stats']
+        as Map<String, dynamic>;
+    return BulletStats.fromMap(bulletStats);
+  }
+
   String getSpritePath(String type) {
     // Check if the type exists in the config
     if (!this._config.containsKey(type)) {
@@ -50,6 +67,22 @@ class GameConfigLoader {
       type = this.defaultType;
     }
     return this._config[type]['sprite'];
+  }
+
+  String getWeaponSpritePath(String type) {
+    // Check if the type has a sprite
+    if (!this._config['weapons'][type].containsKey('sprite')) {
+      type = this.defaultType;
+    }
+    return this._config['weapons'][type]['sprite'];
+  }
+
+  String getBulletSpritePath(String type) {
+    // Check if the type has a sprite
+    if (!this._config['weapons'][type]['bullet'].containsKey('sprite')) {
+      type = this.defaultType;
+    }
+    return this._config['weapons'][type]['bullet']['sprite'];
   }
 
   dynamic getHealthBarConfig(String type) {

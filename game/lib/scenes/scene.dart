@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flutter/services.dart';
 
 import 'package:game/game/rogalik_game.dart';
@@ -39,4 +40,6 @@ abstract class Scene extends Component with HasGameRef<RogalikGame> {
   }
 
   void onKeyPress(KeyEvent event, Set<LogicalKeyboardKey> keysPressed);
+
+  void onPointerMove(PointerMoveEvent event);
 }
