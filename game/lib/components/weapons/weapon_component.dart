@@ -14,7 +14,8 @@ class WeaponComponent extends SpriteComponent with HasGameRef<RogalikGame> {
   final WeaponStats weaponStats;
   final FirstLevelScene scene;
   final String type;
-  double distanceFromPlayer = 50;
+  bool isOnRightSide = true;
+  double distanceFromPlayer = 100;
   double lastBulletTime = 0;
   double currentTime = 0;
   double weaponDirection = 0;
@@ -30,6 +31,21 @@ class WeaponComponent extends SpriteComponent with HasGameRef<RogalikGame> {
       this.y =
           playerComponent!.y + distanceFromPlayer * math.sin(weaponDirection);
     }
+    // Adjust the angle of the sprite to match weaponDirection
+    // Adjust the angle of the sprite to match weaponDirection
+    // Adjust the angle of the sprite to match weaponDirection
+    this.angle =
+        math.atan2(math.sin(weaponDirection), math.cos(weaponDirection));
+
+    // Check if the weapon has changed sides
+    bool currentlyOnRightSide =
+        weaponDirection > -math.pi / 2 && weaponDirection < math.pi / 2;
+    if (currentlyOnRightSide != this.isOnRightSide) {
+      // Flip the sprite
+      this.flipVertically();
+      this.isOnRightSide = currentlyOnRightSide;
+    }
+
     for (final bullet in weapon.bullets) {
       bullet.update(dt);
     }
@@ -49,6 +65,7 @@ class WeaponComponent extends SpriteComponent with HasGameRef<RogalikGame> {
     await configLoader.load('assets/config.yaml');
     this.sprite =
         await gameRef.loadSprite(configLoader.getWeaponSpritePath(type));
+    this.anchor = Anchor.center;
   }
 
   void updateWeaponPosition(Vector2 mousePosition) {

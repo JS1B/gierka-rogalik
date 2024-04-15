@@ -29,7 +29,7 @@ class FirstLevelScene extends Scene {
 
     this.gameRef.playerComponent = PlayerComponent();
     this.add(this.gameRef.playerComponent);
-    this.addWeapon("fists");
+    this.addWeapon("gun");
     this.enemyComponents = [];
     await this.addEnemy(EnemyType.zombie);
   }
