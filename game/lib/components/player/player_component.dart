@@ -20,7 +20,7 @@ class PlayerComponent extends SpriteComponent with HasGameRef<RogalikGame> {
     this.player = Player(playerStats);
     this.sprite =
         await gameRef.loadSprite(configLoader.getSpritePath('player'));
-    this.position = gameRef.size / 2;
+    this.player.position = gameRef.size / 2;
   }
 
   @override
