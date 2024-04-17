@@ -1,17 +1,20 @@
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
 import 'package:game/components/enemies/enemy_component.dart';
 import 'package:game/components/player/player_component.dart';
-import 'package:game/components/player/weapon_component.dart';
+import 'package:game/components/ui/gameplay/background_component.dart';
+import 'package:game/components/ui/gameplay/ui_component.dart';
 import 'package:game/entities/enemies/enemy_factory.dart';
 import 'package:game/scenes/scene.dart';
 
 class FirstLevelScene extends Scene {
-  SpriteComponent? background;
-
-  late Weapon weaponComponent;
-  late List<EnemyComponent> enemyComponents;
+  late List<EnemyComponent> enemyComponents = [];
+  late BackgroundComponent backgroundComponent;
+  late UIComponent uiComponent;
+  late World currentWorld;
+  CameraComponent? camera;
 
   FirstLevelScene() : super();
 
@@ -19,20 +22,24 @@ class FirstLevelScene extends Scene {
   void onLoad() async {
     await super.onLoad();
 
-    this.background = SpriteComponent(
-      sprite: await this.gameRef.loadSprite('background.jpg'),
-      size: this.gameRef.size,
-    );
-    this.add(this.background!);
+    this.backgroundComponent = BackgroundComponent();
 
     this.gameRef.playerComponent = PlayerComponent();
-    this.add(this.gameRef.playerComponent);
+    this.uiComponent = UIComponent();
 
-    this.weaponComponent = Weapon(this.gameRef.playerComponent);
-    this.add(this.weaponComponent);
+    this.currentWorld = await World(
+        children: [this.backgroundComponent, this.gameRef.playerComponent]);
 
-    this.enemyComponents = [];
     await this.addEnemy(EnemyType.zombie, count: 6);
+
+    this.camera = CameraComponent(
+        viewport: FixedResolutionViewport(resolution: this.gameRef.size),
+        world: this.currentWorld);
+    this.camera!.follow(this.gameRef.playerComponent);
+
+    this.add(camera!);
+    this.add(currentWorld);
+    this.gameRef.add(uiComponent);
   }
 
   @override
@@ -62,6 +69,18 @@ class FirstLevelScene extends Scene {
     }
   }
 
+  @override
+  void update(double dt) {
+    super.update(dt);
+  }
+
+  @override
+  void onGameResize(Vector2 gameSize) {
+    super.onGameResize(gameSize);
+    this.camera?.viewport =
+        FixedResolutionViewport(resolution: this.gameRef.size);
+  }
+
   Future<void> addEnemy(EnemyType type, {int count = 1}) async {
     var enemyStats = this.gameRef.configLoader.getEntityStats(type.name);
 
@@ -75,7 +94,7 @@ class FirstLevelScene extends Scene {
 
       var enemyComponent = await EnemyComponent(enemy: enemy, image: img);
       this.enemyComponents.add(enemyComponent);
-      this.add(enemyComponent);
+      this.currentWorld.add(enemyComponent);
     }
   }
 
@@ -83,7 +102,7 @@ class FirstLevelScene extends Scene {
     if (this.enemyComponents.isEmpty) return;
 
     var enemyComponent = this.enemyComponents[0];
-    this.remove(enemyComponent);
+    this.currentWorld.remove(enemyComponent);
     this.enemyComponents.remove(enemyComponent);
   }
 }

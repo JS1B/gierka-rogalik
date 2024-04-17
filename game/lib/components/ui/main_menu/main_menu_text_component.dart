@@ -3,11 +3,11 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextComponent extends PositionComponent with HasGameRef<FlameGame> {
-  late final Map<String, dynamic> config;
+  late final Map<String, dynamic> _config;
   late TextPainter _textPainter;
   final String text;
 
-  CustomTextComponent(this.text, this.config) : super() {
+  CustomTextComponent(this.text, this._config) : super() {
     this.anchor = Anchor.center;
   }
 
@@ -24,7 +24,7 @@ class CustomTextComponent extends PositionComponent with HasGameRef<FlameGame> {
     this._textPainter.paint(
         canvas,
         Offset((this.gameRef.size.x - this._textPainter.width) / 2,
-            this.gameRef.size.y * this.config['y_offset']));
+            this.gameRef.size.y * this._config['y_offset']));
   }
 
   void updateTextStyle() {
@@ -39,7 +39,7 @@ class CustomTextComponent extends PositionComponent with HasGameRef<FlameGame> {
               Shadow(offset: Offset(-5, 5), color: Colors.white),
             ],
             color: Colors.black,
-            fontSize: this.gameRef.size.x * this.config['font_size'],
+            fontSize: this.gameRef.size.x * this._config['font_size'],
             fontFamily: 'MainFont'),
       ),
       textDirection: TextDirection.ltr,

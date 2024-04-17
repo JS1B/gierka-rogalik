@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   flame: ^1.17.0
   yaml: ^3.1.2
+  fast_noise: ^2.0.0
 
 flutter:
   assets:
@@ -21,3 +22,6 @@ flutter:
     - family: MainFont
       fonts:
         - asset: assets/fonts/main_font.ttf
+    - family: InGameFont
+      fonts:
+        - asset: assets/fonts/ingame_font.ttf
