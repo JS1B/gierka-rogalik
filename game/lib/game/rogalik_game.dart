@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/events.dart';
@@ -16,6 +17,10 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
 
   final GameConfigLoader configLoader = GameConfigLoader();
 
+  RogalikGame({bool? debugMode}) : super() {
+    this.debugMode = debugMode ?? false;
+  }
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -24,6 +29,11 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
     this.sceneManager = SceneManager();
     this.add(this.sceneManager);
     await this.sceneManager.setScene(MainMenuScene());
+
+    if (!this.debugMode) return;
+    var fpsComponent = FpsTextComponent(
+        anchor: Anchor.topRight, position: Vector2(this.size.x, 0));
+    this.add(fpsComponent);
   }
 
   @override
