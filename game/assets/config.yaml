@@ -1,4 +1,151 @@
-player:
-  speed: 200.0
-  turningSpeed: 5.0
-  deceleration: 0.1
+---
+# Initial new player parameters
+default:
+  sprite: player-sprite.png
+  weapon: gun
+  stats:
+    maxSpeed: 400.0
+    turningSpeed: 8.0
+    deceleration: 5.0
+
+    health: 100.0
+    maxHealth: 100.0
+    regenRate: 10.0
+
+    armor: 0.0
+    armorPenetration: 0.0
+
+    attackRange: 100.0
+    attackPower: 10.0
+    attackCooldown: 1.0
+
+    critChance: 0.0
+    critMultiplier: 2.0
+brawler:
+  sprite: brawler-sprite.png
+  weapon: fists
+  stats:
+    maxSpeed: 300.0
+    turningSpeed: 7.0
+    deceleration: 5.0
+
+    health: 150.0
+    maxHealth: 100.0
+    regenRate: 10.0
+
+    armor: 0.0
+    armorPenetration: 0.0
+
+    attackRange: 100.0
+    attackPower: 10.0
+    attackCooldown: 1.0
+
+    critChance: 0.0
+    critMultiplier: 2.0
+
+# Generic enemy parameters
+enemy:
+  sprite: enemy-sprite.png
+
+  healthBar:
+    height: 7.0
+    padding: 2.0
+
+    backgroundColor: 0xFF000000
+    fillColor: 0xFF4CAF50
+    enableNumericDisplay: true
+
+  stats:
+    maxSpeed: 100.0
+    turningSpeed: 1.0
+    # deceleration: 0.0
+
+    health: 100.0
+    maxHealth: 100.0
+    regenRate: 0.0
+
+    armor: 0.0
+    armorPenetration: 0.0
+
+    attackRange: 60.0
+    attackPower: 10.0
+    attackCooldown: 1.0
+
+    critChance: 0.0
+    critMultiplier: 2.0
+
+# Zombie enemy parameters
+zombie:
+  sprite: zombie-sprite.png
+
+  stats:
+    maxSpeed: 60.0
+
+    maxHealth: 200.0
+    regenRate: 40.0
+
+    attackPower: 20.0
+
+# Goblin enemy parameters
+goblin:
+  sprite: goblin-spritesheet.png
+
+  stats:
+    maxSpeed: 250.0
+
+    health: 50.0
+    maxHealth: 50.0
+
+    attackRange: 40.0
+
+    critChance: 90.0
+
+# Robot enemy parameters
+robot:
+  # sprite: 
+  
+  stats:
+    maxSpeed: 175.0
+
+    health: 100.0
+    maxHealth: 100.0
+
+    armor: 20.0
+    armorPenetration: 10.0
+
+    attackRange: 150.0
+    attackPower: 20.0
+
+# Weapons
+weapons: 
+  # Pistol stats
+  gun:
+    sprite: gun-sprite.png
+    stats:
+      range: 2000.0
+      damage: 30.0
+      fireRate: 0.5
+      critChance: 0.1
+      critMultiplier: 2.0
+    bullet:
+      sprite: bullet-sprite.png
+      stats:
+        speed: 200.0
+        lifetime: 10.0
+        width: 10.0
+        height: 10.0
+  fists:
+    sprite: fists-sprite.png
+    stats:
+      range: 5.0
+      damage: 60.0
+      fireRate: 3
+      critChance: 0.1
+      critMultiplier: 2.0
+    bullet:
+      sprite: fist-sprite.png
+      stats:
+        speed: 300.0
+        lifetime: 0.5
+        width: 30.0
+        height: 30.0

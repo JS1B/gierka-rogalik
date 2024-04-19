@@ -19,4 +19,13 @@ flutter run -d chrome
 
 # For running locally
 flutter run
+# or
+flutter run -d linux
+
 ```
+
+How to play
+-----------
+
+- use `wasd` to move the player
+- use keys `k`, `l` to add and remove enemies
