@@ -4,9 +4,9 @@ player:
   sprite: player-sprite.png
 
   stats:
+    maxAcceleration: 4000.0 # Applied immediately on key press
     maxSpeed: 400.0
-    turningSpeed: 8.0
-    deceleration: 5.0
+    deceleration: 800.0
 
     health: 100.0
     maxHealth: 100.0
@@ -22,6 +22,8 @@ player:
     critChance: 0.0
     critMultiplier: 2.0
 
+    mass: 1.0
+
 # Generic enemy parameters
 enemy:
   sprite: enemy-sprite.png
@@ -35,9 +37,9 @@ enemy:
     enableNumericDisplay: true
 
   stats:
+    # maxAcceleration: 200.0 # Enemies are velocity controlled
     maxSpeed: 100.0
-    turningSpeed: 1.0
-    # deceleration: 0.0
+    deceleration: 0.0 # Enemies are velocity controlled
 
     health: 100.0
     maxHealth: 100.0
@@ -53,6 +55,8 @@ enemy:
     critChance: 0.0
     critMultiplier: 2.0
 
+    mass: 1.0
+
 # Zombie enemy parameters
 zombie:
   sprite: zombie-sprite.png
@@ -63,7 +67,10 @@ zombie:
     maxHealth: 200.0
     regenRate: 40.0
 
+    attackRange: 100.0
     attackPower: 20.0
+
+    mass: 4.0
 
 # Goblin enemy parameters
 goblin:
@@ -78,6 +85,8 @@ goblin:
     attackRange: 40.0
 
     critChance: 90.0
+
+    mass: 0.8
 
 # Robot enemy parameters
 robot:
@@ -94,3 +103,5 @@ robot:
 
     attackRange: 150.0
     attackPower: 20.0
+
+    mass: 2.2

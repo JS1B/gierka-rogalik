@@ -9,7 +9,7 @@ import 'package:game/components/ui/gameplay/ui_component.dart';
 import 'package:game/entities/enemies/enemy_factory.dart';
 import 'package:game/scenes/scene.dart';
 
-class FirstLevelScene extends Scene {
+class FirstLevelScene extends Scene with HasCollisionDetection {
   late List<EnemyComponent> enemyComponents = [];
   late BackgroundComponent backgroundComponent;
   late UIComponent uiComponent;
@@ -59,10 +59,10 @@ class FirstLevelScene extends Scene {
       direction.add(Vector2(1, 0));
     }
 
-    this.gameRef.playerComponent.setTargetDirection(direction);
+    this.gameRef.playerComponent.setTargetDirection(direction.normalized());
 
     if (keysPressed.contains(LogicalKeyboardKey.keyK)) {
-      this.addEnemy(EnemyType.goblin);
+      this.addEnemy(EnemyType.zombie);
     }
     if (keysPressed.contains(LogicalKeyboardKey.keyL)) {
       this.removeRandomEnemy();
