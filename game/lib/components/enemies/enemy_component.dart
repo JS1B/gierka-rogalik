@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart' hide Image;
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
@@ -8,8 +9,10 @@ import 'package:flame/sprite.dart';
 import 'package:game/game/rogalik_game.dart';
 import 'package:game/entities/enemies/enemy.dart';
 import 'package:game/components/ui/healthbar_component.dart';
+import 'package:game/components/player/player_component.dart';
 
-class EnemyComponent extends ShapeComponent with HasGameRef<RogalikGame> {
+class EnemyComponent extends ShapeComponent
+    with HasGameRef<RogalikGame>, CollisionCallbacks {
   late Enemy enemy;
   late TextPainter nameTextPainter;
   late HealthBarComponent healthBarComponent;
@@ -57,7 +60,7 @@ class EnemyComponent extends ShapeComponent with HasGameRef<RogalikGame> {
     this.animations.animationTickers?[EnemyState.attacking]?.onComplete = () {
       this.gameRef.playerComponent.player.getHit(this.enemy.stats);
 
-      this.enemy.resetAttackCooldown();
+      this.enemy.resetAttack();
     };
     this.add(this.animations);
 
@@ -88,24 +91,31 @@ class EnemyComponent extends ShapeComponent with HasGameRef<RogalikGame> {
       textDirection: TextDirection.ltr,
     );
     this.nameTextPainter.layout();
+
+    final hitbox = CircleHitbox.relative(
+      0.9,
+      position: this.size.scaled(0.5),
+      parentSize: this.size,
+      anchor: Anchor.center,
+      isSolid: true,
+    );
+    this.add(hitbox);
   }
 
   @override
   void update(double dt) {
     super.update(dt);
 
-    this.animations.current = this.enemy.state;
     this.enemy.setTargetDistance(
         this.gameRef.playerComponent.player.position - this.enemy.position);
     this.enemy.update(dt);
+    this.animations.current = this.enemy.state;
 
     if (this.enemy.stats.health <= 0) {
-      this.gameRef.sceneManager.currentScene?.remove(this);
+      this.removeFromParent();
     }
 
     this.healthBarComponent.updateHealth(this.enemy.stats.health.toInt());
-
-    super.update(dt);
 
     // Update the position of the component
     this.position = this.enemy.position;
@@ -124,6 +134,19 @@ class EnemyComponent extends ShapeComponent with HasGameRef<RogalikGame> {
         canvas, Offset((this.width - this.nameTextPainter.width) / 2, 0));
   }
 
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+
+    Vector2 pushBackVector = (this.position - other.position).normalized();
+    if (other is PlayerComponent) {
+      this.enemy.attack();
+      this.enemy.addPushBack(pushBackVector);
+    } else if (other is EnemyComponent) {
+      this.enemy.addPushBack(pushBackVector.scaled(1.2));
+    }
+  }
+
   // #TODO Replace those methods with actual animations
   SpriteAnimation createDummyAnimation(Vector2 size) {
     List<Sprite> sprites = [
@@ -134,7 +157,8 @@ class EnemyComponent extends ShapeComponent with HasGameRef<RogalikGame> {
       createDummySprite(Colors.red.shade800, size),
     ];
     return SpriteAnimation.spriteList(sprites,
-        stepTime: this.enemy.stats.attackCooldown / 6, loop: false);
+        stepTime: this.enemy.stats.attackCooldown / (sprites.length + 1),
+        loop: false);
   }
 
   Sprite createDummySprite(Color color, Vector2 size) {

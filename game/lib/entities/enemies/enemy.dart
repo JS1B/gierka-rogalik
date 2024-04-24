@@ -23,46 +23,48 @@ class Enemy extends Entity {
       isSmall: (a) => a.length < 1,
       initialValue: Vector2.zero());
 
-  EnemyState state = EnemyState.moving;
+  EnemyState _state = EnemyState.moving;
+  EnemyState _commandState = EnemyState.moving;
 
   Enemy(EntityStats stats, Vector2 size, {Vector2? position})
       : super(stats, size, position: position);
 
-  /// Perform all the actions for the enemy
   @override
   void update(double dt) {
     super.update(dt);
-    this.attack();
+    this._state = this._commandState;
   }
 
-  /// Move using the configured pid controller
   @override
-  void move(double dt) {
+  void calculateAcceleration(dt) {
     Vector2 pidOutput = Vector2.zero();
     this.movementPIDC.update(this.target_distance, dt);
     this.movementPIDC.output.copyInto(pidOutput);
 
-    // Limit velocity to max speed
-    if (this.stats.maxSpeed > 0) pidOutput.clampLength(0, this.stats.maxSpeed);
+    this.acceleration = pidOutput;
+  }
 
-    // Update the position
-    this.position.add(pidOutput);
+  EnemyState get state => this._state;
+
+  set state(EnemyState state) {
+    this._commandState = state;
   }
 
   /// Check if attack can be performed
   bool canAttack() {
     return this.target_distance.length < this.stats.attackRange &&
-        this.state != EnemyState.attacking;
+        this._state != EnemyState.attacking;
   }
 
-  /// Perform attack
+  /// Trigger the attack state
   void attack() {
     if (!this.canAttack()) return;
 
-    this.state = EnemyState.attacking;
+    this._commandState = EnemyState.attacking;
   }
 
-  void resetAttackCooldown() {
-    this.state = EnemyState.moving;
+  /// Reset the attack
+  void resetAttack() {
+    this._commandState = EnemyState.moving;
   }
 }
