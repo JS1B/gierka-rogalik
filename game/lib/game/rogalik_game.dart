@@ -28,7 +28,7 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
 
     this.sceneManager = SceneManager();
     this.add(this.sceneManager);
-    await this.sceneManager.setScene(MainMenuScene());
+    await this.sceneManager.pushScene(MainMenuScene());
 
     if (!this.debugMode) return;
     var fpsComponent = FpsTextComponent(

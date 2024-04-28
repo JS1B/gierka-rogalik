@@ -14,20 +14,27 @@ class CustomTextComponent extends PositionComponent with HasGameRef<FlameGame> {
   @override
   void onLoad() async {
     await super.onLoad();
-    this.updateTextStyle();
+    this._updateTextStyle();
   }
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
 
+    this._textPainter.layout();
     this._textPainter.paint(
         canvas,
         Offset((this.gameRef.size.x - this._textPainter.width) / 2,
             this.gameRef.size.y * this._config['y_offset']));
   }
 
-  void updateTextStyle() {
+  @override
+  void onGameResize(Vector2 gameSize) {
+    super.onGameResize(gameSize);
+    _updateTextStyle();
+  }
+
+  void _updateTextStyle() {
     this._textPainter = TextPainter(
       text: TextSpan(
         text: this.text,
@@ -44,6 +51,5 @@ class CustomTextComponent extends PositionComponent with HasGameRef<FlameGame> {
       ),
       textDirection: TextDirection.ltr,
     );
-    this._textPainter.layout();
   }
 }
