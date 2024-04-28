@@ -4,17 +4,33 @@ import 'package:flutter/services.dart';
 import 'package:game/scenes/scene.dart';
 
 class SceneManager extends Component {
-  Scene? currentScene;
+  List<Scene> scenePushPop = [];
 
-  Future<void> setScene(Scene scene) async {
-    if (this.currentScene != null) {
-      this.remove(this.currentScene!);
+  Future<void> pushScene(Scene scene) async {
+    if (this.scenePushPop.isNotEmpty) {
+      this.remove(this.scenePushPop.last);
     }
+    this.scenePushPop.add(scene);
     this.add(scene);
-    this.currentScene = scene;
+  }
+
+  Future<void> popScene({numberToPop = 1}) async {
+    for (var i = 0; i < numberToPop; i++) {
+      if (this.scenePushPop.isNotEmpty) {
+        if (i == 0) this.remove(this.scenePushPop.last);
+        this.scenePushPop.removeLast();
+      }
+    }
+
+    if (this.scenePushPop.isNotEmpty) {
+      this.add(this.scenePushPop.last);
+      this.scenePushPop.last.onReload();
+    }
   }
 
   void passKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    this.currentScene?.onKeyPress(event, keysPressed);
+    if (this.scenePushPop.isNotEmpty) {
+      this.scenePushPop.last.onKeyPress(event, keysPressed);
+    }
   }
 }

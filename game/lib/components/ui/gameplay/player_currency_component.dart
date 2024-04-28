@@ -22,14 +22,14 @@ class PlayerCurrencyComponent extends PositionComponent
         SpriteComponent(sprite: await this.gameRef.loadSprite('coin.png'));
     this.add(this.coin!);
     this.updateCoin();
-    this.updateTextStyle();
+    this._updateTextStyle();
   }
 
   @override
   void onGameResize(Vector2 gameSize) {
     super.onGameResize(gameSize);
     this.updateCoin();
-    this.updateTextStyle();
+    this._updateTextStyle();
   }
 
   @override
@@ -43,7 +43,7 @@ class PlayerCurrencyComponent extends PositionComponent
             this.gameRef.size.y * (this._config['position'].y)));
   }
 
-  void updateTextStyle() {
+  void _updateTextStyle() {
     this._textPainter = TextPainter(
       text: TextSpan(
         text: "000000",

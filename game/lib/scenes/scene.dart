@@ -1,12 +1,23 @@
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:game/components/ui/gameplay/ui_component.dart';
 
 import 'package:game/game/rogalik_game.dart';
 
 abstract class Scene extends Component with HasGameRef<RogalikGame> {
   SpriteComponent? background;
+  UIComponent? uiComponent;
+  World? currentWorld;
 
   Scene() : super();
+
+  void onReload();
+
+  @override
+  void onRemove() {
+    this.uiComponent?.removeFromParent();
+    super.onRemove();
+  }
 
   @override
   void onGameResize(Vector2 gameSize) {

@@ -7,14 +7,12 @@ import 'package:game/components/player/player_component.dart';
 import 'package:game/components/ui/gameplay/background_component.dart';
 import 'package:game/components/ui/gameplay/ui_component.dart';
 import 'package:game/entities/enemies/enemy_factory.dart';
+import 'package:game/scenes/in_game_pause.dart';
 import 'package:game/scenes/scene.dart';
 
 class FirstLevelScene extends Scene with HasCollisionDetection {
   late List<EnemyComponent> enemyComponents = [];
   late BackgroundComponent backgroundComponent;
-  late UIComponent uiComponent;
-  late World currentWorld;
-  CameraComponent? camera;
 
   FirstLevelScene() : super();
 
@@ -23,23 +21,24 @@ class FirstLevelScene extends Scene with HasCollisionDetection {
     await super.onLoad();
 
     this.backgroundComponent = BackgroundComponent();
-
     this.gameRef.playerComponent = PlayerComponent();
-    this.uiComponent = UIComponent();
+    this.uiComponent = UIComponent()..priority = 1;
 
     this.currentWorld = await World(
         children: [this.backgroundComponent, this.gameRef.playerComponent]);
 
+    this.gameRef.add(this.uiComponent!);
+    this.gameRef.camera = CameraComponent(world: this.currentWorld);
+    this.gameRef.camera.follow(this.gameRef.playerComponent);
+    this.gameRef.camera.priority = 0;
+
+    this.add(this.currentWorld!);
     await this.addEnemy(EnemyType.zombie, count: 6);
+  }
 
-    this.camera = CameraComponent(
-        viewport: FixedResolutionViewport(resolution: this.gameRef.size),
-        world: this.currentWorld);
-    this.camera!.follow(this.gameRef.playerComponent);
-
-    this.add(camera!);
-    this.add(currentWorld);
-    this.gameRef.add(uiComponent);
+  @override
+  void onReload() {
+    this.gameRef.add(this.uiComponent!);
   }
 
   @override
@@ -67,18 +66,15 @@ class FirstLevelScene extends Scene with HasCollisionDetection {
     if (keysPressed.contains(LogicalKeyboardKey.keyL)) {
       this.removeRandomEnemy();
     }
-  }
 
-  @override
-  void update(double dt) {
-    super.update(dt);
+    if (keysPressed.contains(LogicalKeyboardKey.escape)) {
+      this.gameRef.sceneManager.pushScene(InGamePauseScene());
+    }
   }
 
   @override
   void onGameResize(Vector2 gameSize) {
     super.onGameResize(gameSize);
-    this.camera?.viewport =
-        FixedResolutionViewport(resolution: this.gameRef.size);
   }
 
   Future<void> addEnemy(EnemyType type, {int count = 1}) async {
@@ -94,7 +90,7 @@ class FirstLevelScene extends Scene with HasCollisionDetection {
 
       var enemyComponent = await EnemyComponent(enemy: enemy, image: img);
       this.enemyComponents.add(enemyComponent);
-      this.currentWorld.add(enemyComponent);
+      this.currentWorld?.add(enemyComponent);
     }
   }
 
@@ -102,7 +98,7 @@ class FirstLevelScene extends Scene with HasCollisionDetection {
     if (this.enemyComponents.isEmpty) return;
 
     var enemyComponent = this.enemyComponents[0];
-    this.currentWorld.remove(enemyComponent);
+    this.currentWorld?.remove(enemyComponent);
     this.enemyComponents.remove(enemyComponent);
   }
 }

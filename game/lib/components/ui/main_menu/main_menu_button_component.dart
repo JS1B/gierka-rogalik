@@ -24,7 +24,7 @@ class CustomButtonComponent extends PositionComponent
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    this._buttonPainter.layout();
+
     this._buttonPainter.paint(canvas, Vector2.zero().toOffset());
   }
 
