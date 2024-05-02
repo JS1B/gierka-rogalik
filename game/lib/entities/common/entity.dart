@@ -8,16 +8,25 @@ import 'package:game/entities/common/entity_stats.dart';
 /// Provides health regeneration
 abstract class Entity {
   EntityStats stats;
-  Vector2 position;
-  Vector2 velocity = Vector2.zero();
-  Vector2 acceleration = Vector2.zero();
-
   Vector2 size;
+
+  Vector2 position;
+  Vector2 velocity;
+  Vector2 acceleration;
 
   Vector2 target_distance = Vector2.zero();
 
-  Entity(this.stats, this.size, {Vector2? position})
-      : this.position = position ?? Vector2.zero();
+  Entity(this.stats, this.size,
+      {Vector2? position, Vector2? velocity, Vector2? acceleration})
+      : this.position = position ?? Vector2.zero(),
+        this.velocity = velocity ?? Vector2.zero(),
+        this.acceleration = acceleration ?? Vector2.zero();
+  Entity.fromMap(Map<String, dynamic> map)
+      : this.stats = EntityStats.fromMap(map['stats']),
+        this.size = Vector2.fromFloat64List(map['size']),
+        this.position = Vector2.fromFloat64List(map['position']),
+        this.velocity = Vector2.fromFloat64List(map['velocity']),
+        this.acceleration = Vector2.fromFloat64List(map['acceleration']);
 
   /// Perform all the actions for the entity
   void update(double dt) {
@@ -79,5 +88,15 @@ abstract class Entity {
   void addPushBack(Vector2 pushback) {
     final double intensity = 30;
     this.velocity.add(pushback.scaled(intensity / this.stats.mass));
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'position': this.position.storage,
+      'velocity': this.velocity.storage,
+      'acceleration': this.acceleration.storage,
+      'size': this.size.storage,
+      'stats': this.stats.toJson(),
+    };
   }
 }

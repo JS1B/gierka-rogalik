@@ -55,4 +55,24 @@ class EntityStats {
       map['mass'] ?? 1.0,
     );
   }
+
+  // Add a method to convert the object to a JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'maxAcceleration': this.maxAcceleration,
+      'maxSpeed': this.maxSpeed,
+      'deceleration': this.deceleration,
+      'health': this.health,
+      'regenRate': this.regenRate,
+      'maxHealth': this.maxHealth,
+      'armor': this.armor,
+      'armorPenetration': this.armorPenetration,
+      'attackRange': this.attackRange,
+      'attackPower': this.attackPower,
+      'attackCooldown': this.attackCooldown,
+      'critChance': this.critChance,
+      'critMultiplier': this.critMultiplier,
+      'mass': this.mass,
+    };
+  }
 }
