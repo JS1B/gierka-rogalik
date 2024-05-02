@@ -24,7 +24,6 @@ class SceneManager extends Component {
 
     if (this.scenePushPop.isNotEmpty) {
       this.add(this.scenePushPop.last);
-      this.scenePushPop.last.onReload();
     }
   }
 
