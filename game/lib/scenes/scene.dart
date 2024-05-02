@@ -11,8 +11,6 @@ abstract class Scene extends Component with HasGameRef<RogalikGame> {
 
   Scene() : super();
 
-  void onReload();
-
   @override
   void onRemove() {
     this.uiComponent?.removeFromParent();

@@ -1,4 +1,3 @@
-import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
@@ -27,7 +26,6 @@ class FirstLevelScene extends Scene with HasCollisionDetection {
     this.currentWorld = await World(
         children: [this.backgroundComponent, this.gameRef.playerComponent]);
 
-    this.gameRef.add(this.uiComponent!);
     this.gameRef.camera = CameraComponent(world: this.currentWorld);
     this.gameRef.camera.follow(this.gameRef.playerComponent);
     this.gameRef.camera.priority = 0;
@@ -37,7 +35,8 @@ class FirstLevelScene extends Scene with HasCollisionDetection {
   }
 
   @override
-  void onReload() {
+  void onMount() {
+    super.onMount();
     this.gameRef.add(this.uiComponent!);
   }
 

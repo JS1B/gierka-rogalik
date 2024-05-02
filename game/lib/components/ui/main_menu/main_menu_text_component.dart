@@ -31,7 +31,7 @@ class CustomTextComponent extends PositionComponent with HasGameRef<FlameGame> {
   @override
   void onGameResize(Vector2 gameSize) {
     super.onGameResize(gameSize);
-    _updateTextStyle();
+    this._updateTextStyle();
   }
 
   void _updateTextStyle() {

@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
@@ -42,9 +43,6 @@ class MainMenuScene extends Scene {
     this.add(this.title);
     this.addAll(this.buttons);
   }
-
-  @override
-  void onReload() {}
 
   @override
   void onKeyPress(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {}

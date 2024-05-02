@@ -34,9 +34,6 @@ class InGamePauseScene extends Scene {
   }
 
   @override
-  void onReload() {}
-
-  @override
   void onKeyPress(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     if (keysPressed.contains(LogicalKeyboardKey.escape)) {
       this.gameRef.sceneManager.popScene();
