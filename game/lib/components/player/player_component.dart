@@ -22,10 +22,11 @@ class PlayerComponent extends SpriteComponent
     await configLoader.load('assets/config.yaml');
     var playerStats = configLoader.getEntityStats('player');
 
-    this.player = Player(playerStats);
+    this.player =
+        Player(playerStats, this.size, position: this.gameRef.size / 2);
+
     this.sprite =
         await this.gameRef.loadSprite(configLoader.getSpritePath('player'));
-    this.player.position = this.gameRef.size / 2;
 
     // Build a capsule / tictac hitbox
     final double radius =

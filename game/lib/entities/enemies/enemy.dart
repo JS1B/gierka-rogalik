@@ -26,8 +26,12 @@ class Enemy extends Entity {
   EnemyState _state = EnemyState.moving;
   EnemyState _commandState = EnemyState.moving;
 
-  Enemy(EntityStats stats, Vector2 size, {Vector2? position})
-      : super(stats, size, position: position);
+  Enemy(EntityStats stats, Vector2 size,
+      {Vector2? position, Vector2? velocity, Vector2? acceleration})
+      : super(stats, size,
+            position: position, velocity: velocity, acceleration: acceleration);
+
+  Enemy.fromMap(Map<String, dynamic> map) : super.fromMap(map);
 
   @override
   void update(double dt) {
