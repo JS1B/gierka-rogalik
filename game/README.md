@@ -28,4 +28,7 @@ How to play
 -----------
 
 - use `wasd` to move the player
-- use keys `k`, `l` to add and remove enemies
+- use `k` and `l` to add and remove enemies
+- use `escape`, `ctrl + q` or `ctrl + w` to quit the game
+- use `f1` to toggle debug mode
+  
