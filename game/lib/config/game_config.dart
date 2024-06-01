@@ -24,6 +24,10 @@ class GameConfigLoader {
     });
   }
 
+  Map<String, dynamic> getBackendConfig() {
+    return this._config['serverCommunication'] as Map<String, dynamic>;
+  }
+
   EntityStats getEntityStats(String type) {
     // Get the generic enemy stats
     var genericStats =

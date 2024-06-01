@@ -31,6 +31,8 @@ services:
     depends_on:
       - mongo
       - postgres
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
     networks:
       - rogalik_network
     restart: on-failure

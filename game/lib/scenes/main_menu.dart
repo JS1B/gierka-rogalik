@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
-import 'package:game/components/ui/main_menu/main_menu_button_component.dart';
-import 'package:game/components/ui/main_menu/main_menu_text_component.dart';
-import 'package:game/scenes/first_level.dart';
+import 'package:game/components/ui/main_menu/custom_button_component.dart';
+import 'package:game/components/ui/main_menu/custom_text_component.dart';
+import 'package:game/scenes/login_create_account.dart';
 import 'package:game/scenes/scene.dart';
 
 class MainMenuScene extends Scene {
@@ -28,7 +28,7 @@ class MainMenuScene extends Scene {
     this.buttons = [
       CustomButtonComponent('Play', {'y_offset': 0.5, 'font_size': 0.05},
           () async {
-        await this.gameRef.sceneManager.pushScene(FirstLevelScene());
+        await this.gameRef.sceneManager.pushScene(LoginCreateAccountScene());
       }),
       CustomButtonComponent('Settings', {'y_offset': 0.65, 'font_size': 0.05},
           () {

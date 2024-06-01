@@ -1,10 +1,10 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:game/game/rogalik_game.dart';
 
 class CustomButtonComponent extends PositionComponent
-    with TapCallbacks, HoverCallbacks, HasGameRef<FlameGame> {
+    with TapCallbacks, HoverCallbacks, HasGameRef<RogalikGame> {
   final Map<String, dynamic> _config;
   final String text;
   final Function onTapFunction;

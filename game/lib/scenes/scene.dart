@@ -1,10 +1,13 @@
+import 'package:flame/game.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flutter/services.dart';
 import 'package:game/components/ui/gameplay/ui_component.dart';
 
 import 'package:game/game/rogalik_game.dart';
 
-abstract class Scene extends Component with HasGameRef<RogalikGame> {
+abstract class Scene extends Component
+    with TapCallbacks, HasGameRef<RogalikGame> {
   SpriteComponent? background;
   UIComponent? uiComponent;
   World? currentWorld;
@@ -47,5 +50,13 @@ abstract class Scene extends Component with HasGameRef<RogalikGame> {
     this.background!.position = Vector2(dx, dy);
   }
 
-  void onKeyPress(KeyEvent event, Set<LogicalKeyboardKey> keysPressed);
+  bool containsLocalPoint(Vector2 point) {
+    return point.x >= 0 &&
+        point.x <= this.gameRef.size.x &&
+        point.y >= 0 &&
+        point.y <= this.gameRef.size.y;
+  }
+
+  void signal(Map<String, dynamic> data) {}
+  void onKeyPress(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {}
 }
