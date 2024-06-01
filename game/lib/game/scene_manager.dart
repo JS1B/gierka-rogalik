@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
@@ -24,6 +26,8 @@ class SceneManager extends Component {
 
     if (this.scenePushPop.isNotEmpty) {
       this.add(this.scenePushPop.last);
+    } else {
+      exit(0);
     }
   }
 

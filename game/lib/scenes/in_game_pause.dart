@@ -1,6 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
-import 'package:game/components/ui/main_menu/main_menu_button_component.dart';
+import 'package:game/components/ui/main_menu/custom_button_component.dart';
 
 import 'package:game/scenes/scene.dart';
 

@@ -68,7 +68,6 @@ func (uc *UserController) AddUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user.UserID = uuid.NewString()
-	user.Password, _ = HashPassword(user.Password)
 
 	result := uc.client.Create(&user)
 	if result.Error != nil {

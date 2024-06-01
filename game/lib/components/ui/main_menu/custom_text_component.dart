@@ -1,8 +1,9 @@
 import 'package:flame/components.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:game/game/rogalik_game.dart';
 
-class CustomTextComponent extends PositionComponent with HasGameRef<FlameGame> {
+class CustomTextComponent extends PositionComponent
+    with HasGameRef<RogalikGame> {
   late final Map<String, dynamic> _config;
   late TextPainter _textPainter;
   final String text;

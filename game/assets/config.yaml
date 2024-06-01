@@ -1,4 +1,10 @@
 ---
+# Backend communication parameters
+serverCommunication:
+  host: "localhost"
+  port: 8080
+  localUserLoginCache: "user-login-cache.json"
+
 # Initial new player parameters
 player:
   sprite: player-sprite.png
