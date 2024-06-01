@@ -62,10 +62,9 @@ class RogalikGame extends FlameGame with KeyboardEvents, PointerMoveCallbacks {
     }
 
     bool shouldExit = false;
-    if (keysPressed.contains(LogicalKeyboardKey.escape) ||
-        (keysPressed.length == 2 &&
-            keysPressed.contains(LogicalKeyboardKey.controlLeft) &&
-            keysPressed.contains(LogicalKeyboardKey.keyW))) {
+    if (keysPressed.length == 2 &&
+        keysPressed.contains(LogicalKeyboardKey.controlLeft) &&
+        keysPressed.contains(LogicalKeyboardKey.keyW)) {
       shouldExit = true;
     }
     this.sceneManager.passKeyEvent(event, keysPressed);
