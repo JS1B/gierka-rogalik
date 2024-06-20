@@ -2,16 +2,20 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
 import 'package:game/components/enemies/enemy_component.dart';
+import 'package:game/components/enemies/enemy_spawner.dart';
 import 'package:game/components/player/player_component.dart';
 import 'package:game/components/ui/gameplay/background_component.dart';
 import 'package:game/components/ui/gameplay/ui_component.dart';
 import 'package:game/entities/enemies/enemy_factory.dart';
 import 'package:game/scenes/in_game_pause.dart';
 import 'package:game/scenes/scene.dart';
+import 'package:game/game/scenario_manager.dart';
 
 class FirstLevelScene extends Scene with HasCollisionDetection {
   late List<EnemyComponent> enemyComponents = [];
   late BackgroundComponent backgroundComponent;
+
+  late ScenarioManager scenarioManager;
 
   FirstLevelScene() : super();
 
@@ -21,6 +25,16 @@ class FirstLevelScene extends Scene with HasCollisionDetection {
 
     this.backgroundComponent = BackgroundComponent();
     this.gameRef.playerComponent = PlayerComponent();
+
+    this.scenarioManager = ScenarioManager();
+    this.scenarioManager.addLevel(Level()
+      ..addWaves([
+        EasyWave(),
+        MediumWave(),
+        HardWave(),
+        BossWave(),
+      ]));
+
     this.uiComponent = UIComponent()..priority = 1;
 
     this.currentWorld = await World(
@@ -30,8 +44,8 @@ class FirstLevelScene extends Scene with HasCollisionDetection {
     this.gameRef.camera.follow(this.gameRef.playerComponent);
     this.gameRef.camera.priority = 0;
 
+    this.currentWorld!.add(this.scenarioManager);
     this.add(this.currentWorld!);
-    await this.addEnemy(EnemyType.zombie, count: 6);
   }
 
   @override
