@@ -7,7 +7,7 @@ serverCommunication:
 
 # Initial new player parameters
 player:
-  sprite: player-sprite.png
+  sprite: player-ninja-sprite.png
 
   stats:
     maxAcceleration: 4000.0 # Applied immediately on key press
