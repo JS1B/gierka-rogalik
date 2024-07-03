@@ -1,15 +1,16 @@
-# Rogalik Game Server
-=======================================
-
+Rogalik Game Server
+===================
 A simple GoLang server that implements user interaction, meaning user creation and login as well as ability to store game state data.
 
-## Usage 
+How to run
+----------
 
-```
+```golang
 go run .
 ```
 
-## Files and folders
+Files and folders
+-----------------
 
 * **config** - module that ensures that .env files are loaded and exports a Go struct for every module to be able to load it
 * **controllers** - modules that create specific endpoints of the server such as /user or /map and implement the logic for database interactions
