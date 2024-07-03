@@ -6,6 +6,8 @@ Gierka Rogalik
 How to run
 ----------
 
+First install [flutter](https://docs.flutter.dev/get-started/install) from google.
+
 ```bash
 git clone
 cd gierka-rogalik/game
@@ -21,11 +23,12 @@ flutter run -d chrome
 flutter run
 # or
 flutter run -d linux
-
 ```
 
 How to play
 -----------
+
+Ensure there is a server running as you need to be registered and logged in.
 
 - use `wasd` to move the player
 - use `k` and `l` to add and remove enemies
